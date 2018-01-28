@@ -31,6 +31,9 @@ public class LabeledSwitch extends View {
     private int outerRadii;
     private int thumbRadii;
 
+    private float thumbOnCenterX;
+    private float thumbOffCenterX;
+
     private boolean isOn;
 
     private Paint paint;
@@ -79,6 +82,9 @@ public class LabeledSwitch extends View {
 
         this.labelOn = "NEED";
         this.labelOff = "WANT";
+
+        if(typeface != null) {
+        }
     }
 
     @Override
@@ -94,14 +100,17 @@ public class LabeledSwitch extends View {
         canvas.drawRect(outerRadii, 0, width - outerRadii, height, paint);
         float textCenter = paint.measureText(MAX_CHAR) / 16;
         if(isOn) {
-            paint.setColor(colorOff);
+            int alpha = (int)(((thumbBounds.centerX() - (width / 2)) / (thumbOnCenterX - (width / 2))) * 255);
+            paint.setColor(Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff)));
             canvas.drawText(labelOn, padding, (padding / 2) + (height / 2) + textCenter, paint);
+            paint.setColor(colorOff);
         } else {
-            paint.setColor(colorOn);
+            int alpha = (int)((((width / 2) - thumbBounds.centerX()) / ((width / 2) - thumbOffCenterX)) * 255);
+            paint.setColor(Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn)));
             canvas.drawText(labelOff, padding + (2 * thumbRadii), (padding / 2) + (height / 2) + textCenter, paint);
+            paint.setColor(colorOn);
         }
         canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
-
     }
 
     @Override
@@ -112,6 +121,12 @@ public class LabeledSwitch extends View {
         outerRadii = Math.min(width, height) / 2;
         thumbRadii = (int) (Math.min(width, height) / (2.88f));
         padding = (height - thumbRadii) / 2;
+
+        thumbBounds.set(width - padding - thumbRadii, padding, width - padding, height - padding);
+        thumbOnCenterX = thumbBounds.centerX();
+
+        thumbBounds.set(padding, padding, padding + thumbRadii, height - padding);
+        thumbOffCenterX = thumbBounds.centerX();
 
         if(isOn) {
             thumbBounds.set(width - padding - thumbRadii, padding, width - padding, height - padding);
@@ -258,6 +273,7 @@ public class LabeledSwitch extends View {
 
     public void setTypeface(Typeface typeface) {
         this.typeface = typeface;
+        paint.setTypeface(typeface);
     }
 
     public boolean isOn() {
