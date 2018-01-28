@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable
+        name="LabeledSwitch">
+
+        <attr
+            name="label_on"
+            format="string"/>
+
+        <attr
+            name="label_off"
+            format="string"/>
+
+        <attr
+            name="color_on"
+            format="color"/>
+
+        <attr
+            name="color_off"
+            format="color"/>
+
+        <attr name="on"
+            format="boolean"/>
+
+        <attr name="text_size"
+            format="integer"/>
+    </declare-styleable>
+</resources>

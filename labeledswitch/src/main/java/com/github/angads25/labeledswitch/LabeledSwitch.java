@@ -3,6 +3,7 @@ package com.github.angads25.labeledswitch;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
+import com.github.angads25.labeledswitch.interfaces.OnToggledListener;
 
 /**
  * <p>
@@ -26,18 +29,16 @@ public class LabeledSwitch extends View {
     private int padding;
 
     private int colorOn;
-    private int colorOff;
+    private int colorOff
+            ;
+    private int textSize;
 
     private int outerRadii;
     private int thumbRadii;
 
-    private float thumbOnCenterX;
-    private float thumbOffCenterX;
-
     private boolean isOn;
 
     private Paint paint;
-    private Context context;
 
     private long startTime;
 
@@ -48,48 +49,84 @@ public class LabeledSwitch extends View {
 
     private Typeface typeface;
 
+    private float thumbOnCenterX;
+    private float thumbOffCenterX;
+
     private final String MAX_CHAR = "W";
+
+    private OnToggledListener onToggledListener;
 
     public LabeledSwitch(Context context) {
         super(context);
-        initView(context);
+        initView();
     }
 
     public LabeledSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView(context);
+        initView();
+        initProperties(attrs);
     }
 
     public LabeledSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(context);
+        initView();
+        initProperties(attrs);
     }
 
-    private void initView(Context context) {
+    private void initView() {
         this.isOn = false;
-        this.context = context;
-        this.colorOn = Color.parseColor("#05CAA5");
+
+        this.labelOn = "ON";
+        this.labelOff = "OFF";
+
+        this.textSize = 12;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            colorOn = getResources().getColor(R.color.colorAccent, getContext().getTheme());
+        } else {
+            colorOn = getResources().getColor(R.color.colorAccent);
+        }
         this.colorOff = Color.parseColor("#FFFFFF");
 
         paint = new Paint();
         paint.setAntiAlias(true);
 
         thumbBounds = new RectF();
+    }
 
-        int spSize = 12;
-        float scaledSizeInPixels = spSize * getResources().getDisplayMetrics().scaledDensity;
-        paint.setTextSize(scaledSizeInPixels);
-
-        this.labelOn = "NEED";
-        this.labelOff = "WANT";
-
-        if(typeface != null) {
+    private void initProperties(AttributeSet attrs) {
+        TypedArray tarr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.LabeledSwitch,0,0);
+        final int N = tarr.getIndexCount();
+        for (int i = 0; i < N; ++i) {
+            int attr = tarr.getIndex(i);
+            if (attr == R.styleable.LabeledSwitch_on) {
+                isOn = tarr.getBoolean(R.styleable.LabeledSwitch_on, false);
+            } else if (attr == R.styleable.LabeledSwitch_color_off) {
+                colorOff = tarr.getColor(R.styleable.LabeledSwitch_color_off, Color.parseColor("#FFFFFF"));
+            } else if (attr == R.styleable.LabeledSwitch_color_on) {
+                int accentColor;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    accentColor = getResources().getColor(R.color.colorAccent, getContext().getTheme());
+                } else {
+                    accentColor = getResources().getColor(R.color.colorAccent);
+                }
+                colorOn = tarr.getColor(R.styleable.LabeledSwitch_color_on, accentColor);
+            } else if (attr == R.styleable.LabeledSwitch_label_off) {
+                labelOff = tarr.getString(R.styleable.LabeledSwitch_label_off);
+            } else if (attr == R.styleable.LabeledSwitch_label_on) {
+                labelOn = tarr.getString(R.styleable.LabeledSwitch_label_on);
+            } else if (attr == R.styleable.LabeledSwitch_text_size) {
+                textSize = tarr.getInteger(R.styleable.LabeledSwitch_text_size, 12);
+            }
         }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        float scaledSizeInPixels = textSize * getResources().getDisplayMetrics().scaledDensity;
+        paint.setTextSize(scaledSizeInPixels);
+
         if(isOn) {
             paint.setColor(colorOn);
         } else {
@@ -97,17 +134,30 @@ public class LabeledSwitch extends View {
         }
         canvas.drawCircle(outerRadii, outerRadii, outerRadii, paint);
         canvas.drawCircle(width - outerRadii, outerRadii, outerRadii, paint);
-        canvas.drawRect(outerRadii, 0, width - outerRadii, height, paint);
+        canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
         float textCenter = paint.measureText(MAX_CHAR) / 16;
         if(isOn) {
             int alpha = (int)(((thumbBounds.centerX() - (width / 2)) / (thumbOnCenterX - (width / 2))) * 255);
             paint.setColor(Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff)));
-            canvas.drawText(labelOn, padding, (padding / 2) + (height / 2) + textCenter, paint);
+
+            int maxSize = width - (3 * padding) - (2 * thumbRadii);
+            float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
+
+            canvas.drawText(
+                    labelOn,
+                    padding + (extraSpace > 0 ? extraSpace : 0),
+                    (padding / 2) + (height / 2) + textCenter,
+                    paint
+            );
             paint.setColor(colorOff);
         } else {
             int alpha = (int)((((width / 2) - thumbBounds.centerX()) / ((width / 2) - thumbOffCenterX)) * 255);
             paint.setColor(Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn)));
-            canvas.drawText(labelOff, padding + (2 * thumbRadii), (padding / 2) + (height / 2) + textCenter, paint);
+
+            int maxSize = width - (3 * padding) - (2 * thumbRadii);
+            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
+
+            canvas.drawText(labelOff, padding + (2 * thumbRadii) + (extraSpace > 0 ? extraSpace : 0), (padding / 2) + (height / 2) + textCenter, paint);
             paint.setColor(colorOn);
         }
         canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
@@ -138,101 +188,110 @@ public class LabeledSwitch extends View {
     @Override
     @SuppressLint("ClickableViewAccessibility")
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN: {
-                startTime = System.currentTimeMillis();
-                return true;
-            }
+        if(isEnabled()) {
+            float x = event.getX();
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    startTime = System.currentTimeMillis();
+                    return true;
+                }
 
-            case MotionEvent.ACTION_MOVE: {
-                // TODO: MOVE INNER CIRCLE HERE
-                if(x - (thumbRadii / 2) > padding && x + (thumbRadii / 2) < width - padding) {
-                    if(x >= width / 2) {
-                        isOn = true;
-                    } else {
-                        isOn = false;
+                case MotionEvent.ACTION_MOVE: {
+                    // TODO: MOVE INNER CIRCLE HERE
+                    if (x - (thumbRadii / 2) > padding && x + (thumbRadii / 2) < width - padding) {
+                        if (x >= width / 2) {
+                            isOn = true;
+                        } else {
+                            isOn = false;
+                        }
+                        thumbBounds.set(x - (thumbRadii / 2), thumbBounds.top, x + (thumbRadii / 2), thumbBounds.bottom);
+                        invalidate();
                     }
-                    thumbBounds.set(x - (thumbRadii / 2), thumbBounds.top, x + (thumbRadii / 2), thumbBounds.bottom);
+                    return true;
+                }
+
+                case MotionEvent.ACTION_UP: {
+                    long endTime = System.currentTimeMillis();
+                    long span = endTime - startTime;
+                    if (span < 200) {
+                        // TODO: JUST TOGGLE THE CURRENT SELECTION
+                        if (isOn) {
+                            ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
+                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    float value = (float) animation.getAnimatedValue();
+                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                                    invalidate();
+                                }
+                            });
+                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
+                            switchColor.setDuration(250);
+                            switchColor.start();
+                        } else {
+                            ValueAnimator switchColor = ValueAnimator.ofFloat(padding, width - padding - thumbRadii);
+                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    float value = (float) animation.getAnimatedValue();
+                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                                    invalidate();
+                                }
+                            });
+                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
+                            switchColor.setDuration(250);
+                            switchColor.start();
+                        }
+                        isOn =! isOn;
+                    } else {
+                        if (x >= width / 2) {
+                            //TODO: LOOP TO RIGHT
+                            ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
+                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    float value = (float) animation.getAnimatedValue();
+                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                                    invalidate();
+                                }
+                            });
+                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
+                            switchColor.setDuration(250);
+                            switchColor.start();
+                            isOn = true;
+                        } else {
+                            //TODO: LOOP TO LEFT
+                            ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
+                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    float value = (float) animation.getAnimatedValue();
+                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                                    invalidate();
+                                }
+                            });
+                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
+                            switchColor.setDuration(250);
+                            switchColor.start();
+                            isOn = false;
+                        }
+                    }
                     invalidate();
+                    onToggledListener.onSwitched(this, isOn);
+                    return true;
                 }
-                return true;
-            }
 
-            case MotionEvent.ACTION_UP: {
-                long endTime = System.currentTimeMillis();
-                long span = endTime - startTime;
-                if(span < 300) {
-                    // TODO: JUST TOGGLE THE CURRENT SELECTION
-                    if(isOn) {
-                        ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
-                        switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                float value = (float) animation.getAnimatedValue();
-                                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                invalidate();
-                            }
-                        });
-                        switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                        switchColor.setDuration(250);
-                        switchColor.start();
-                    } else {
-                        ValueAnimator switchColor = ValueAnimator.ofFloat(padding, width - padding - thumbRadii);
-                        switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                float value = (float) animation.getAnimatedValue();
-                                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                invalidate();
-                            }
-                        });
-                        switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                        switchColor.setDuration(250);
-                        switchColor.start();
-                    }
-                    isOn =! isOn;
-                } else {
-                    if(x >= width / 2) {
-                        //TODO: LOOP TO RIGHT
-                        ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
-                        switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                float value = (float) animation.getAnimatedValue();
-                                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                invalidate();
-                            }
-                        });
-                        switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                        switchColor.setDuration(250);
-                        switchColor.start();
-                        isOn = true;
-                    } else {
-                        //TODO: LOOP TO LEFT
-                        ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding? padding : x), padding);
-                        switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                float value = (float) animation.getAnimatedValue();
-                                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                invalidate();
-                            }
-                        });
-                        switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                        switchColor.setDuration(250);
-                        switchColor.start();
-                        isOn = false;
-                    }
+                default: {
+                    return super.onTouchEvent(event);
                 }
-                invalidate();
-                return true;
             }
-
-            default: {
-                return super.onTouchEvent(event);
-            }
+        } else {
+            return false;
         }
+    }
+
+    public void setOnToggledListener(OnToggledListener onToggledListener) {
+        this.onToggledListener = onToggledListener;
     }
 
     public int getColorOn() {
@@ -241,6 +300,7 @@ public class LabeledSwitch extends View {
 
     public void setColorOn(int colorOn) {
         this.colorOn = colorOn;
+        invalidate();
     }
 
     public int getColorOff() {
@@ -249,6 +309,7 @@ public class LabeledSwitch extends View {
 
     public void setColorOff(int colorOff) {
         this.colorOff = colorOff;
+        invalidate();
     }
 
     public String getLabelOn() {
@@ -257,6 +318,7 @@ public class LabeledSwitch extends View {
 
     public void setLabelOn(String labelOn) {
         this.labelOn = labelOn;
+        invalidate();
     }
 
     public String getLabelOff() {
@@ -265,6 +327,7 @@ public class LabeledSwitch extends View {
 
     public void setLabelOff(String labelOff) {
         this.labelOff = labelOff;
+        invalidate();
     }
 
     public Typeface getTypeface() {
@@ -287,5 +350,6 @@ public class LabeledSwitch extends View {
         } else {
             thumbBounds.set(padding, padding, padding + thumbRadii, height - padding);
         }
+        invalidate();
     }
 }
