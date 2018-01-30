@@ -45,6 +45,8 @@ public class LabeledSwitch extends View {
     private String labelOff;
 
     private RectF thumbBounds;
+    private RectF leftBgArc;
+    private RectF rightBgArc;
 
     private Typeface typeface;
 
@@ -90,6 +92,8 @@ public class LabeledSwitch extends View {
         paint = new Paint();
         paint.setAntiAlias(true);
 
+        leftBgArc = new RectF();
+        rightBgArc = new RectF();
         thumbBounds = new RectF();
     }
 
@@ -132,16 +136,16 @@ public class LabeledSwitch extends View {
             int onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
             paint.setColor(onColor);
 
-            canvas.drawCircle(outerRadii, outerRadii, outerRadii, paint);
-            canvas.drawCircle(width - outerRadii, outerRadii, outerRadii, paint);
+            canvas.drawArc(leftBgArc, 90, 180, false, paint);
+            canvas.drawArc(rightBgArc, 90, -180, false, paint);
             canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
 
             alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
             int offColor = Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
             paint.setColor(offColor);
 
-            canvas.drawCircle(outerRadii, outerRadii, outerRadii, paint);
-            canvas.drawCircle(width - outerRadii, outerRadii, outerRadii, paint);
+            canvas.drawArc(leftBgArc, 90, 180, false, paint);
+            canvas.drawArc(rightBgArc, 90, -180, false, paint);
             canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
         }
 
@@ -210,6 +214,9 @@ public class LabeledSwitch extends View {
         } else {
             thumbBounds.set(padding, padding, padding + thumbRadii, height - padding);
         }
+
+        leftBgArc.set(0,0, 2 * outerRadii, height);
+        rightBgArc.set((width - (2 * outerRadii)),0, width, height);
     }
 
     @Override
