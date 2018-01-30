@@ -29,8 +29,7 @@ public class LabeledSwitch extends View {
     private int padding;
 
     private int colorOn;
-    private int colorOff
-            ;
+    private int colorOff;
     private int textSize;
 
     private int outerRadii;
@@ -127,18 +126,31 @@ public class LabeledSwitch extends View {
         float scaledSizeInPixels = textSize * getResources().getDisplayMetrics().scaledDensity;
         paint.setTextSize(scaledSizeInPixels);
 
-        if(isOn) {
-            paint.setColor(colorOn);
-        } else {
-            paint.setColor(colorOff);
+//      Drawing Switch background here
+        {
+            int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            int onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+            paint.setColor(onColor);
+
+            canvas.drawCircle(outerRadii, outerRadii, outerRadii, paint);
+            canvas.drawCircle(width - outerRadii, outerRadii, outerRadii, paint);
+            canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
+
+            alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            int offColor = Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
+            paint.setColor(offColor);
+
+            canvas.drawCircle(outerRadii, outerRadii, outerRadii, paint);
+            canvas.drawCircle(width - outerRadii, outerRadii, outerRadii, paint);
+            canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
         }
-        canvas.drawCircle(outerRadii, outerRadii, outerRadii, paint);
-        canvas.drawCircle(width - outerRadii, outerRadii, outerRadii, paint);
-        canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
+
+//      Drawing Switch Labels here
         float textCenter = paint.measureText(MAX_CHAR) / 16;
         if(isOn) {
             int alpha = (int)(((thumbBounds.centerX() - (width / 2)) / (thumbOnCenterX - (width / 2))) * 255);
-            paint.setColor(Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff)));
+            int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
+            paint.setColor(offColor);
 
             int maxSize = width - (3 * padding) - (2 * thumbRadii);
             float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
@@ -152,7 +164,8 @@ public class LabeledSwitch extends View {
             paint.setColor(colorOff);
         } else {
             int alpha = (int)((((width / 2) - thumbBounds.centerX()) / ((width / 2) - thumbOffCenterX)) * 255);
-            paint.setColor(Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn)));
+            int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+            paint.setColor(onColor);
 
             int maxSize = width - (3 * padding) - (2 * thumbRadii);
             float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
@@ -160,7 +173,21 @@ public class LabeledSwitch extends View {
             canvas.drawText(labelOff, padding + (2 * thumbRadii) + (extraSpace > 0 ? extraSpace : 0), (padding / 2) + (height / 2) + textCenter, paint);
             paint.setColor(colorOn);
         }
-        canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
+
+//      Drawing Switch Thumb here
+        {
+            int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            int offColor = Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
+            paint.setColor(offColor);
+
+            canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
+
+            alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            int onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+            paint.setColor(onColor);
+
+            canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
+        }
     }
 
     @Override
@@ -197,7 +224,7 @@ public class LabeledSwitch extends View {
                 }
 
                 case MotionEvent.ACTION_MOVE: {
-                    // TODO: MOVE INNER CIRCLE HERE
+                    // TODO: MOVE THUMB TO THIS POSITION
                     if (x - (thumbRadii / 2) > padding && x + (thumbRadii / 2) < width - padding) {
                         if (x >= width / 2) {
                             isOn = true;
@@ -245,7 +272,7 @@ public class LabeledSwitch extends View {
                         isOn =! isOn;
                     } else {
                         if (x >= width / 2) {
-                            //TODO: LOOP TO RIGHT
+                            //TODO: MOVE SWITCH TO RIGHT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
                             switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                 @Override
@@ -260,7 +287,7 @@ public class LabeledSwitch extends View {
                             switchColor.start();
                             isOn = true;
                         } else {
-                            //TODO: LOOP TO LEFT
+                            //TODO: MOVE SWITCH TO LEFT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
                             switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                 @Override
@@ -277,7 +304,9 @@ public class LabeledSwitch extends View {
                         }
                     }
                     invalidate();
-                    onToggledListener.onSwitched(this, isOn);
+                    if(onToggledListener != null) {
+                        onToggledListener.onSwitched(this, isOn);
+                    }
                     return true;
                 }
 
