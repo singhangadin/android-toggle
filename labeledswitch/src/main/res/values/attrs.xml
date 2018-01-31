@@ -4,25 +4,29 @@
         name="LabeledSwitch">
 
         <attr
-            name="label_on"
+            name="onText"
             format="string"/>
 
         <attr
-            name="label_off"
+            name="offText"
             format="string"/>
 
         <attr
-            name="color_on"
+            name="offColor"
             format="color"/>
 
         <attr
-            name="color_off"
+            name="onColor"
+            format="color"/>
+
+        <attr
+            name="borderColor"
             format="color"/>
 
         <attr name="on"
             format="boolean"/>
 
-        <attr name="text_size"
+        <attr name="textSize"
             format="integer"/>
     </declare-styleable>
 </resources>

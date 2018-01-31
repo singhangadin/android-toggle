@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
         labeledSwitch.setOnToggledListener(new OnToggledListener() {
             @Override
             public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
-                ((AppCompatTextView)findViewById(R.id.label_value)).setText(isOn ? "ON" : "OFF");
+                ((AppCompatTextView)findViewById(R.id.label_value))
+                        .setText(isOn ? labeledSwitch.getLabelOn() : labeledSwitch.getLabelOff());
             }
         });
     }

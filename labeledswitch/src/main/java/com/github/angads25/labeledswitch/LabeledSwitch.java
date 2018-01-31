@@ -30,6 +30,8 @@ public class LabeledSwitch extends View {
 
     private int colorOn;
     private int colorOff;
+    private int borderColor;
+
     private int textSize;
 
     private int outerRadii;
@@ -45,15 +47,19 @@ public class LabeledSwitch extends View {
     private String labelOff;
 
     private RectF thumbBounds;
+
     private RectF leftBgArc;
     private RectF rightBgArc;
+
+    private RectF leftFgArc;
+    private RectF rightFgArc;
 
     private Typeface typeface;
 
     private float thumbOnCenterX;
     private float thumbOffCenterX;
 
-    private final String MAX_CHAR = "W";
+    private final String MAX_CHAR = "N";
 
     private OnToggledListener onToggledListener;
 
@@ -83,9 +89,9 @@ public class LabeledSwitch extends View {
         this.textSize = 12;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            colorOn = getResources().getColor(R.color.colorAccent, getContext().getTheme());
+            borderColor = colorOn = getResources().getColor(R.color.colorAccent, getContext().getTheme());
         } else {
-            colorOn = getResources().getColor(R.color.colorAccent);
+            borderColor = colorOn = getResources().getColor(R.color.colorAccent);
         }
         this.colorOff = Color.parseColor("#FFFFFF");
 
@@ -94,6 +100,9 @@ public class LabeledSwitch extends View {
 
         leftBgArc = new RectF();
         rightBgArc = new RectF();
+
+        leftFgArc = new RectF();
+        rightFgArc = new RectF();
         thumbBounds = new RectF();
     }
 
@@ -104,22 +113,30 @@ public class LabeledSwitch extends View {
             int attr = tarr.getIndex(i);
             if (attr == R.styleable.LabeledSwitch_on) {
                 isOn = tarr.getBoolean(R.styleable.LabeledSwitch_on, false);
-            } else if (attr == R.styleable.LabeledSwitch_color_off) {
-                colorOff = tarr.getColor(R.styleable.LabeledSwitch_color_off, Color.parseColor("#FFFFFF"));
-            } else if (attr == R.styleable.LabeledSwitch_color_on) {
+            } else if (attr == R.styleable.LabeledSwitch_offColor) {
+                colorOff = tarr.getColor(R.styleable.LabeledSwitch_offColor, Color.parseColor("#FFFFFF"));
+            } else if (attr == R.styleable.LabeledSwitch_borderColor) {
                 int accentColor;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     accentColor = getResources().getColor(R.color.colorAccent, getContext().getTheme());
                 } else {
                     accentColor = getResources().getColor(R.color.colorAccent);
                 }
-                colorOn = tarr.getColor(R.styleable.LabeledSwitch_color_on, accentColor);
-            } else if (attr == R.styleable.LabeledSwitch_label_off) {
-                labelOff = tarr.getString(R.styleable.LabeledSwitch_label_off);
-            } else if (attr == R.styleable.LabeledSwitch_label_on) {
-                labelOn = tarr.getString(R.styleable.LabeledSwitch_label_on);
-            } else if (attr == R.styleable.LabeledSwitch_text_size) {
-                textSize = tarr.getInteger(R.styleable.LabeledSwitch_text_size, 12);
+                borderColor = tarr.getColor(R.styleable.LabeledSwitch_borderColor, accentColor);
+            } else if (attr == R.styleable.LabeledSwitch_onColor) {
+                int accentColor;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    accentColor = getResources().getColor(R.color.colorAccent, getContext().getTheme());
+                } else {
+                    accentColor = getResources().getColor(R.color.colorAccent);
+                }
+                colorOn = tarr.getColor(R.styleable.LabeledSwitch_onColor, accentColor);
+            } else if (attr == R.styleable.LabeledSwitch_offText) {
+                labelOff = tarr.getString(R.styleable.LabeledSwitch_offText);
+            } else if (attr == R.styleable.LabeledSwitch_onText) {
+                labelOn = tarr.getString(R.styleable.LabeledSwitch_onText);
+            } else if (attr == R.styleable.LabeledSwitch_textSize) {
+                textSize = tarr.getInteger(R.styleable.LabeledSwitch_textSize, 12);
             }
         }
     }
@@ -132,6 +149,17 @@ public class LabeledSwitch extends View {
 
 //      Drawing Switch background here
         {
+            paint.setColor(borderColor);
+            canvas.drawArc(leftBgArc, 90, 180, false, paint);
+            canvas.drawArc(rightBgArc, 90, -180, false, paint);
+            canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
+
+            paint.setColor(colorOff);
+
+            canvas.drawArc(leftFgArc, 90, 180, false, paint);
+            canvas.drawArc(rightFgArc, 90, -180, false, paint);
+            canvas.drawRect(outerRadii, padding / 10, (width - outerRadii), height - (padding / 10), paint);
+
             int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
             int onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
             paint.setColor(onColor);
@@ -144,13 +172,13 @@ public class LabeledSwitch extends View {
             int offColor = Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
             paint.setColor(offColor);
 
-            canvas.drawArc(leftBgArc, 90, 180, false, paint);
-            canvas.drawArc(rightBgArc, 90, -180, false, paint);
-            canvas.drawRect(outerRadii, 0, (width - outerRadii), height, paint);
+            canvas.drawArc(leftFgArc, 90, 180, false, paint);
+            canvas.drawArc(rightFgArc, 90, -180, false, paint);
+            canvas.drawRect(outerRadii, padding / 10, (width - outerRadii), height - (padding / 10), paint);
         }
 
 //      Drawing Switch Labels here
-        float textCenter = paint.measureText(MAX_CHAR) / 16;
+        float textCenter = paint.measureText(MAX_CHAR) / 2;
         if(isOn) {
             int alpha = (int)(((thumbBounds.centerX() - (width / 2)) / (thumbOnCenterX - (width / 2))) * 255);
             int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
@@ -159,12 +187,7 @@ public class LabeledSwitch extends View {
             int maxSize = width - (3 * padding) - (2 * thumbRadii);
             float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
 
-            canvas.drawText(
-                    labelOn,
-                    padding + (extraSpace > 0 ? extraSpace : 0),
-                    (padding / 2) + (height / 2) + textCenter,
-                    paint
-            );
+            canvas.drawText(labelOn, padding + (extraSpace > 0 ? extraSpace : 0), (height / 2) + textCenter, paint);
             paint.setColor(colorOff);
         } else {
             int alpha = (int)((((width / 2) - thumbBounds.centerX()) / ((width / 2) - thumbOffCenterX)) * 255);
@@ -174,7 +197,7 @@ public class LabeledSwitch extends View {
             int maxSize = width - (3 * padding) - (2 * thumbRadii);
             float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
 
-            canvas.drawText(labelOff, padding + (2 * thumbRadii) + (extraSpace > 0 ? extraSpace : 0), (padding / 2) + (height / 2) + textCenter, paint);
+            canvas.drawText(labelOff, padding + (2 * thumbRadii) + (extraSpace > 0 ? extraSpace : 0), (height / 2) + textCenter, paint);
             paint.setColor(colorOn);
         }
 
@@ -216,7 +239,10 @@ public class LabeledSwitch extends View {
         }
 
         leftBgArc.set(0,0, 2 * outerRadii, height);
-        rightBgArc.set((width - (2 * outerRadii)),0, width, height);
+        rightBgArc.set(width - (2 * outerRadii),0, width, height);
+
+        leftFgArc.set(padding / 10,padding / 10, (2 * outerRadii)- (padding / 10), height - (padding / 10));
+        rightFgArc.set(width - (2 * outerRadii) + (padding / 10),padding / 10, width - (padding / 10), height - (padding / 10));
     }
 
     @Override
