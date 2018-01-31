@@ -270,7 +270,8 @@ public class LabeledSwitch extends View {
                     return true;
                 }
 
-                case MotionEvent.ACTION_UP: {
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL: {
                     long endTime = System.currentTimeMillis();
                     long span = endTime - startTime;
                     if (span < 200) {
