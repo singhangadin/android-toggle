@@ -1,4 +1,4 @@
-package com.github.angads25.labeledswitchdemo;
+package com.github.angads25.toggledemo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

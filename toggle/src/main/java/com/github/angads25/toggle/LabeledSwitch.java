@@ -1,4 +1,4 @@
-package com.github.angads25.labeledswitch;
+package com.github.angads25.toggle;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.github.angads25.labeledswitch.interfaces.OnToggledListener;
+import com.github.angads25.toggle.interfaces.OnToggledListener;
 
 /**
  * <p>

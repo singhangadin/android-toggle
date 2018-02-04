@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.angads25.labeledswitchdemo.MainActivity">
+    tools:context="com.github.angads25.toggledemo.MainActivity">
 
-    <com.github.angads25.labeledswitch.LabeledSwitch
+    <com.github.angads25.toggle.LabeledSwitch
         android:id="@+id/switch_demo"
         android:layout_width="82dp"
         android:layout_height="32dp"
@@ -15,7 +15,7 @@
         app:on="false"
         app:onText="NEED"
         app:offText="WANT"
-        app:borderColor="#FFFFFF"/>
+        app:borderColor="@color/colorAccent"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/label_value"

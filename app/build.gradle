@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.github.angads25.labeledswitchdemo"
+        applicationId "com.github.angads25.toggledemo"
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 1
@@ -21,9 +21,11 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     
-    implementation project(':labeledswitch')
+    implementation project(':toggle')
     implementation 'com.android.support:appcompat-v7:27.0.2'
-    
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

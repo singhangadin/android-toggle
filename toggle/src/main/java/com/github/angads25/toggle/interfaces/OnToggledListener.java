@@ -1,6 +1,6 @@
-package com.github.angads25.labeledswitch.interfaces;
+package com.github.angads25.toggle.interfaces;
 
-import com.github.angads25.labeledswitch.LabeledSwitch;
+import com.github.angads25.toggle.LabeledSwitch;
 
 /**
  * <p>
