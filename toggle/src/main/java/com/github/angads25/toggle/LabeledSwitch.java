@@ -25,7 +25,6 @@ import com.github.angads25.toggle.interfaces.OnToggledListener;
 public class LabeledSwitch extends View {
     private int width;
     private int height;
-
     private int padding;
 
     private int colorOn;
@@ -184,21 +183,26 @@ public class LabeledSwitch extends View {
             int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
             paint.setColor(offColor);
 
-            int maxSize = width - (3 * padding) - (2 * thumbRadii);
-            float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
+            int maxSize = width - (2 * padding) - (2 * thumbRadii);
 
-            canvas.drawText(labelOn, padding + (extraSpace > 0 ? extraSpace : 0), (height / 2) + textCenter, paint);
-            paint.setColor(colorOff);
+//            float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
+//            TODO: Effective label text area
+//            canvas.drawRect(padding, padding, (padding / 2) + maxSize, height - padding, paint);
+
+            float centerX = (((padding / 2) + maxSize) - padding) / 2;
+            canvas.drawText(labelOn, centerX, (height / 2) + textCenter, paint);
         } else {
             int alpha = (int)((((width / 2) - thumbBounds.centerX()) / ((width / 2) - thumbOffCenterX)) * 255);
             int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
             paint.setColor(onColor);
 
-            int maxSize = width - (3 * padding) - (2 * thumbRadii);
-            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
+//            int maxSize = width - (2 * thumbRadii);
+//            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
+//            TODO: Effective label text area
+//            canvas.drawRect((padding + (padding / 2)) + (2 * thumbRadii), padding, width - padding, height - padding, paint);
 
-            canvas.drawText(labelOff, padding + (2 * thumbRadii) + (extraSpace > 0 ? extraSpace : 0), (height / 2) + textCenter, paint);
-            paint.setColor(colorOn);
+            float centerX = (width - padding - ((padding + (padding / 2)) + (2 * thumbRadii))) / 2;
+            canvas.drawText(labelOff, centerX + (paint.measureText(labelOff) / 2), (height / 2) + textCenter, paint);
         }
 
 //      Drawing Switch Thumb here

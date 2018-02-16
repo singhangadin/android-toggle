@@ -9,7 +9,7 @@
 
     <com.github.angads25.toggle.LabeledSwitch
         android:id="@+id/switch_demo"
-        android:layout_width="82dp"
+        android:layout_width="80dp"
         android:layout_height="32dp"
         android:layout_margin="16dp"
         app:on="false"
