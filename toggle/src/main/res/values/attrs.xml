@@ -4,23 +4,27 @@
         name="Toggle">
 
         <attr
-            name="onText"
+            name="textOn"
             format="string"/>
 
         <attr
-            name="offText"
+            name="textOff"
             format="string"/>
 
         <attr
-            name="offColor"
+            name="colorOff"
             format="color"/>
 
         <attr
-            name="onColor"
+            name="colorOn"
             format="color"/>
 
         <attr
-            name="borderColor"
+            name="colorBorder"
+            format="color"/>
+
+        <attr
+            name="colorDisabled"
             format="color"/>
 
         <attr name="on"

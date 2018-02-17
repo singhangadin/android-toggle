@@ -14,10 +14,10 @@
         android:layout_height="32dp"
         android:layout_margin="16dp"
         android:enabled="false"
-        app:on="true"
-        app:onText="ON"
-        app:offText="OFF"
-        app:borderColor="@color/colorAccent"/>
+        app:on="false"
+        app:textOn="ON"
+        app:textOff="OFF"
+        app:colorBorder="@color/colorAccent"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/label_value"
