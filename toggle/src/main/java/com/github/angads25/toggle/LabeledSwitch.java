@@ -37,6 +37,7 @@ public class LabeledSwitch extends View {
     private int thumbRadii;
 
     private boolean isOn;
+    private boolean enabled;
 
     private Paint paint;
 
@@ -81,10 +82,10 @@ public class LabeledSwitch extends View {
 
     private void initView() {
         this.isOn = false;
-
         this.labelOn = "ON";
         this.labelOff = "OFF";
 
+        this.enabled = true;
         this.textSize = 12;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -106,36 +107,38 @@ public class LabeledSwitch extends View {
     }
 
     private void initProperties(AttributeSet attrs) {
-        TypedArray tarr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.LabeledSwitch,0,0);
+        TypedArray tarr = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.Toggle,0,0);
         final int N = tarr.getIndexCount();
         for (int i = 0; i < N; ++i) {
             int attr = tarr.getIndex(i);
-            if (attr == R.styleable.LabeledSwitch_on) {
-                isOn = tarr.getBoolean(R.styleable.LabeledSwitch_on, false);
-            } else if (attr == R.styleable.LabeledSwitch_offColor) {
-                colorOff = tarr.getColor(R.styleable.LabeledSwitch_offColor, Color.parseColor("#FFFFFF"));
-            } else if (attr == R.styleable.LabeledSwitch_borderColor) {
+            if (attr == R.styleable.Toggle_on) {
+                isOn = tarr.getBoolean(R.styleable.Toggle_on, false);
+            } else if (attr == R.styleable.Toggle_offColor) {
+                colorOff = tarr.getColor(R.styleable.Toggle_offColor, Color.parseColor("#FFFFFF"));
+            } else if (attr == R.styleable.Toggle_borderColor) {
                 int accentColor;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     accentColor = getResources().getColor(R.color.colorAccent, getContext().getTheme());
                 } else {
                     accentColor = getResources().getColor(R.color.colorAccent);
                 }
-                borderColor = tarr.getColor(R.styleable.LabeledSwitch_borderColor, accentColor);
-            } else if (attr == R.styleable.LabeledSwitch_onColor) {
+                borderColor = tarr.getColor(R.styleable.Toggle_borderColor, accentColor);
+            } else if (attr == R.styleable.Toggle_onColor) {
                 int accentColor;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     accentColor = getResources().getColor(R.color.colorAccent, getContext().getTheme());
                 } else {
                     accentColor = getResources().getColor(R.color.colorAccent);
                 }
-                colorOn = tarr.getColor(R.styleable.LabeledSwitch_onColor, accentColor);
-            } else if (attr == R.styleable.LabeledSwitch_offText) {
-                labelOff = tarr.getString(R.styleable.LabeledSwitch_offText);
-            } else if (attr == R.styleable.LabeledSwitch_onText) {
-                labelOn = tarr.getString(R.styleable.LabeledSwitch_onText);
-            } else if (attr == R.styleable.LabeledSwitch_textSize) {
-                textSize = tarr.getInteger(R.styleable.LabeledSwitch_textSize, 12);
+                colorOn = tarr.getColor(R.styleable.Toggle_onColor, accentColor);
+            } else if (attr == R.styleable.Toggle_offText) {
+                labelOff = tarr.getString(R.styleable.Toggle_offText);
+            } else if (attr == R.styleable.Toggle_onText) {
+                labelOn = tarr.getString(R.styleable.Toggle_onText);
+            } else if (attr == R.styleable.Toggle_textSize) {
+                textSize = tarr.getInteger(R.styleable.Toggle_textSize, 12);
+            } else if(attr == R.styleable.Toggle_android_enabled) {
+                enabled = tarr.getBoolean(R.styleable.Toggle_android_enabled, false);
             }
         }
     }
@@ -187,10 +190,13 @@ public class LabeledSwitch extends View {
 
 //            float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
 //            TODO: Effective label text area
+
 //            canvas.drawRect(padding, padding, (padding / 2) + maxSize, height - padding, paint);
+//            int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+//            paint.setColor(onColor);
 
             float centerX = (((padding / 2) + maxSize) - padding) / 2;
-            canvas.drawText(labelOn, centerX, (height / 2) + textCenter, paint);
+            canvas.drawText(labelOn, padding + centerX - (paint.measureText(labelOn) / 2), (height / 2) + textCenter, paint);
         } else {
             int alpha = (int)((((width / 2) - thumbBounds.centerX()) / ((width / 2) - thumbOffCenterX)) * 255);
             int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
@@ -199,10 +205,13 @@ public class LabeledSwitch extends View {
 //            int maxSize = width - (2 * thumbRadii);
 //            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
 //            TODO: Effective label text area
+
 //            canvas.drawRect((padding + (padding / 2)) + (2 * thumbRadii), padding, width - padding, height - padding, paint);
+//            int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
+//            paint.setColor(offColor);
 
             float centerX = (width - padding - ((padding + (padding / 2)) + (2 * thumbRadii))) / 2;
-            canvas.drawText(labelOff, centerX + (paint.measureText(labelOff) / 2), (height / 2) + textCenter, paint);
+            canvas.drawText(labelOff, (padding + (padding / 2)) + (2 * thumbRadii) + centerX - (paint.measureText(labelOff) / 2), (height / 2) + textCenter, paint);
         }
 
 //      Drawing Switch Thumb here

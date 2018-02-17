@@ -5,16 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="com.github.angads25.toggledemo.MainActivity">
 
     <com.github.angads25.toggle.LabeledSwitch
         android:id="@+id/switch_demo"
-        android:layout_width="80dp"
+        android:layout_width="72dp"
         android:layout_height="32dp"
         android:layout_margin="16dp"
-        app:on="false"
-        app:onText="NEED"
-        app:offText="WANT"
+        android:enabled="false"
+        app:on="true"
+        app:onText="ON"
+        app:offText="OFF"
         app:borderColor="@color/colorAccent"/>
 
     <android.support.v7.widget.AppCompatTextView

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable
-        name="LabeledSwitch">
+        name="Toggle">
 
         <attr
             name="onText"
@@ -28,5 +28,7 @@
 
         <attr name="textSize"
             format="integer"/>
+        
+        <attr name="android:enabled"/>
     </declare-styleable>
 </resources>
