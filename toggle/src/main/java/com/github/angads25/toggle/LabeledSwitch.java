@@ -1,7 +1,6 @@
 package com.github.angads25.toggle;
 
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -59,8 +58,6 @@ public class LabeledSwitch extends View {
 
     private float thumbOnCenterX;
     private float thumbOffCenterX;
-
-    private final String MAX_CHAR = "N";
 
     private OnToggledListener onToggledListener;
 
@@ -195,6 +192,7 @@ public class LabeledSwitch extends View {
         }
 
 //      Drawing Switch Labels here
+        String MAX_CHAR = "N";
         float textCenter = paint.measureText(MAX_CHAR) / 2;
         if(isOn) {
             int alpha = (int)(((thumbBounds.centerX() - (width / 2)) / (thumbOnCenterX - (width / 2))) * 255);
@@ -241,7 +239,6 @@ public class LabeledSwitch extends View {
             paint.setColor(offColor);
 
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
-
             alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
 
             int onColor;
@@ -251,7 +248,6 @@ public class LabeledSwitch extends View {
                 onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorDisabled), Color.green(colorDisabled), Color.blue(colorDisabled));
             }
             paint.setColor(onColor);
-
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
         }
     }
@@ -470,6 +466,7 @@ public class LabeledSwitch extends View {
     public void setTypeface(Typeface typeface) {
         this.typeface = typeface;
         paint.setTypeface(typeface);
+        invalidate();
     }
 
     public boolean isOn() {
@@ -492,6 +489,7 @@ public class LabeledSwitch extends View {
 
     public void setColorDisabled(int colorDisabled) {
         this.colorDisabled = colorDisabled;
+        invalidate();
     }
 
     @Override
