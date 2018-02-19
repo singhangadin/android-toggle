@@ -308,7 +308,40 @@ public class LabeledSwitch extends View {
     }
 
     @Override
-    @SuppressLint("ClickableViewAccessibility")
+    public boolean performClick() {
+        super.performClick();
+        if (isOn) {
+            ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
+            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float value = (float) animation.getAnimatedValue();
+                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                    invalidate();
+                }
+            });
+            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
+            switchColor.setDuration(250);
+            switchColor.start();
+        } else {
+            ValueAnimator switchColor = ValueAnimator.ofFloat(padding, width - padding - thumbRadii);
+            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float value = (float) animation.getAnimatedValue();
+                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                    invalidate();
+                }
+            });
+            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
+            switchColor.setDuration(250);
+            switchColor.start();
+        }
+        isOn =! isOn;
+        return true;
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(isEnabled()) {
             float x = event.getX();
@@ -321,11 +354,12 @@ public class LabeledSwitch extends View {
                 case MotionEvent.ACTION_MOVE: {
                     // MOVE THUMB TO THIS POSITION
                     if (x - (thumbRadii / 2) > padding && x + (thumbRadii / 2) < width - padding) {
-                        if (x >= width / 2) {
-                            isOn = true;
-                        } else {
-                            isOn = false;
-                        }
+//                         Uncommenting this toggle switch back to last state on quick swipe actions.
+//                        if (x >= width / 2) {
+//                            isOn = true;
+//                        } else {
+//                            isOn = false;
+//                        }
                         thumbBounds.set(x - (thumbRadii / 2), thumbBounds.top, x + (thumbRadii / 2), thumbBounds.bottom);
                         invalidate();
                     }
@@ -338,34 +372,8 @@ public class LabeledSwitch extends View {
                     long span = endTime - startTime;
                     if (span < 200) {
                         // JUST TOGGLE THE CURRENT SELECTION
-                        if (isOn) {
-                            ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
-                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator animation) {
-                                    float value = (float) animation.getAnimatedValue();
-                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                    invalidate();
-                                }
-                            });
-                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                            switchColor.setDuration(250);
-                            switchColor.start();
-                        } else {
-                            ValueAnimator switchColor = ValueAnimator.ofFloat(padding, width - padding - thumbRadii);
-                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator animation) {
-                                    float value = (float) animation.getAnimatedValue();
-                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                    invalidate();
-                                }
-                            });
-                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                            switchColor.setDuration(250);
-                            switchColor.start();
-                        }
-                        isOn =! isOn;
+                        // USING PERFORM CLICK FOR ACCESSIBILITY SUPPORT
+                        performClick();
                     } else {
                         if (x >= width / 2) {
                             // MOVE SWITCH TO RIGHT

@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'toggle'
+    bintrayName = 'Toggle'
 
     publishedGroupId = 'com.github.angads25'
     libraryName = 'Toggle'
