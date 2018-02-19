@@ -30,8 +30,7 @@
         <attr name="on"
             format="boolean"/>
 
-        <attr name="textSize"
-            format="integer"/>
+        <attr name="android:textSize"/>
         
         <attr name="android:enabled"/>
     </declare-styleable>

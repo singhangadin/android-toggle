@@ -87,7 +87,7 @@ public class LabeledSwitch extends View {
         this.labelOff = "OFF";
 
         this.enabled = true;
-        this.textSize = 12;
+        this.textSize = (int)(12f * getResources().getDisplayMetrics().scaledDensity);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             colorBorder = colorOn = getResources().getColor(R.color.colorAccent, getContext().getTheme());
@@ -140,8 +140,9 @@ public class LabeledSwitch extends View {
                 labelOff = tarr.getString(R.styleable.Toggle_textOff);
             } else if (attr == R.styleable.Toggle_textOn) {
                 labelOn = tarr.getString(R.styleable.Toggle_textOn);
-            } else if (attr == R.styleable.Toggle_textSize) {
-                textSize = tarr.getInteger(R.styleable.Toggle_textSize, 12);
+            } else if (attr == R.styleable.Toggle_android_textSize) {
+                int defaultTextSize = (int)(12f * getResources().getDisplayMetrics().scaledDensity);
+                textSize = tarr.getDimensionPixelSize(R.styleable.Toggle_android_textSize, defaultTextSize);
             } else if(attr == R.styleable.Toggle_android_enabled) {
                 enabled = tarr.getBoolean(R.styleable.Toggle_android_enabled, false);
             }
@@ -151,8 +152,8 @@ public class LabeledSwitch extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float scaledSizeInPixels = textSize * getResources().getDisplayMetrics().scaledDensity;
-        paint.setTextSize(scaledSizeInPixels);
+//        float scaledSizeInPixels = textSize * getResources().getDisplayMetrics().scaledDensity;
+        paint.setTextSize(textSize);
 
 //      Drawing Switch background here
         {
@@ -203,8 +204,8 @@ public class LabeledSwitch extends View {
             int maxSize = width - (2 * padding) - (2 * thumbRadii);
 
 //            float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
-//            TODO: Effective label text area
 
+//            Effective label text area
 //            canvas.drawRect(padding, padding, (padding / 2) + maxSize, height - padding, paint);
 //            int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
 //            paint.setColor(onColor);
@@ -223,8 +224,8 @@ public class LabeledSwitch extends View {
 
 //            int maxSize = width - (2 * thumbRadii);
 //            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
-//            TODO: Effective label text area
 
+//            Effective label text area
 //            canvas.drawRect((padding + (padding / 2)) + (2 * thumbRadii), padding, width - padding, height - padding, paint);
 //            int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
 //            paint.setColor(offColor);
@@ -318,7 +319,7 @@ public class LabeledSwitch extends View {
                 }
 
                 case MotionEvent.ACTION_MOVE: {
-                    // TODO: MOVE THUMB TO THIS POSITION
+                    // MOVE THUMB TO THIS POSITION
                     if (x - (thumbRadii / 2) > padding && x + (thumbRadii / 2) < width - padding) {
                         if (x >= width / 2) {
                             isOn = true;
@@ -336,7 +337,7 @@ public class LabeledSwitch extends View {
                     long endTime = System.currentTimeMillis();
                     long span = endTime - startTime;
                     if (span < 200) {
-                        // TODO: JUST TOGGLE THE CURRENT SELECTION
+                        // JUST TOGGLE THE CURRENT SELECTION
                         if (isOn) {
                             ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
                             switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -367,7 +368,7 @@ public class LabeledSwitch extends View {
                         isOn =! isOn;
                     } else {
                         if (x >= width / 2) {
-                            //TODO: MOVE SWITCH TO RIGHT
+                            // MOVE SWITCH TO RIGHT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
                             switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                 @Override
@@ -382,7 +383,7 @@ public class LabeledSwitch extends View {
                             switchColor.start();
                             isOn = true;
                         } else {
-                            //TODO: MOVE SWITCH TO LEFT
+                            // MOVE SWITCH TO LEFT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
                             switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                 @Override
