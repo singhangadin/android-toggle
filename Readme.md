@@ -10,20 +10,20 @@ Android Library for Custom Switches.
 ### Where to Find:
 [![Download](https://api.bintray.com/packages/angads25/maven/Toggle/images/download.svg)](https://bintray.com/angads25/maven/Toggle/_latestVersion) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle)
 
+### Read all about internal classes and functions in the [wiki](https://github.com/Angads25/android-toggle/wiki).
 
 ### Installation
 
 * Library is also Available in MavenCentral, So just put this in your app dependencies to use it:
 ```gradle
-    compile 'com.github.angads25:toggle:1.0.0'
+    implementation 'com.github.angads25:toggle:1.0.0'
 ```
 
 ### Usage
 
-1. Start by adding a Switch (eg. LabeledSwitch) in your xml layout as:
+1. Start by adding a Switch (eg. `LabeledSwitch`) in your xml layout as:
 
     ```xml
-
         <com.github.angads25.toggle.LabeledSwitch
             android:id="@+id/switch"
             android:layout_width="wrap_content"
@@ -45,7 +45,7 @@ Android Library for Custom Switches.
             }
         });
     ```
-    That's It. All your switching callbacks would be handled in onSwitched method, isOn will provide the current state of the switch.
+    That's It. All your switching callbacks would be handled in `onSwitched` method, parameter `isOn` will provide the current state of the switch.
     
 ### Switches Available
 
