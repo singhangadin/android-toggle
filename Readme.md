@@ -25,7 +25,7 @@ Android Library for Custom Switches.
     ```xml
 
         <com.github.angads25.toggle.LabeledSwitch
-            android:id="@+id/switch1"
+            android:id="@+id/switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -37,7 +37,7 @@ Android Library for Custom Switches.
 2. To the reference of Switch in your Activity/Fragment class and set a ToggleListener to it as below:
 
     ```java
-        LabeledSwitch labeledSwitch = findViewById(R.id.switch1);
+        LabeledSwitch labeledSwitch = findViewById(R.id.switch);
         labeledSwitch.setOnToggledListener(new OnToggledListener() {
             @Override
             public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
@@ -49,6 +49,6 @@ Android Library for Custom Switches.
     
 ### Switches Available
 
-* Labeled Switch
+* Labeled Switch | Designed by - [Shweta Gupta](https://dribbble.com/shwetagupta)
 
 ![Labeled Switch](https://raw.githubusercontent.com/Angads25/android-toggle/develop/screenshots/version%201/device-2018-02-21-233623.png)
