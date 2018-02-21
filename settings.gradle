@@ -1,1 +1,1 @@
-include ':app', ':labeledswitch'
+include ':app', ':toggle'

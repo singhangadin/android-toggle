@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'Toggle'
+
+    publishedGroupId = 'com.github.angads25'
+    libraryName = 'Toggle'
+    artifact = 'toggle'
+
+    libraryDescription = 'Android Library for Custom Switches.'
+
+    siteUrl = 'https://github.com/angads25/android-toggle'
+    gitUrl = 'https://github.com/angads25/android-toggle.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'angads25'
+    developerName = 'Angad Singh'
+    developerEmail = 'angads25@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+}
+
+apply from: 'https://raw.githubusercontent.com/angads25/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/angads25/JCenter/master/bintrayv1.gradle'
