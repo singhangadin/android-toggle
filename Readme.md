@@ -7,7 +7,7 @@ Android Library for Custom Switches.
 ### Benchmark:
 [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 
-### Where to Find:
+### Mentions:
 [![Download](https://api.bintray.com/packages/angads25/maven/Toggle/images/download.svg)](https://bintray.com/angads25/maven/Toggle/_latestVersion) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle)
 
 ### Read all about internal classes and functions in the [wiki](https://github.com/Angads25/android-toggle/wiki).

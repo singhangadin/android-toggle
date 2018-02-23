@@ -26,10 +26,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-
-import com.github.angads25.toggle.interfaces.OnToggledListener;
 
 /**
  * <p>
@@ -37,9 +34,7 @@ import com.github.angads25.toggle.interfaces.OnToggledListener;
  * </p>
  */
 
-public class LabeledSwitch extends View {
-    private int width;
-    private int height;
+public class LabeledSwitch extends ToggleableView {
     private int padding;
 
     private int colorOn;
@@ -51,9 +46,6 @@ public class LabeledSwitch extends View {
 
     private int outerRadii;
     private int thumbRadii;
-
-    private boolean isOn;
-    private boolean enabled;
 
     private Paint paint;
 
@@ -74,8 +66,6 @@ public class LabeledSwitch extends View {
 
     private float thumbOnCenterX;
     private float thumbOffCenterX;
-
-    private OnToggledListener onToggledListener;
 
     public LabeledSwitch(Context context) {
         super(context);
@@ -435,10 +425,6 @@ public class LabeledSwitch extends View {
         }
     }
 
-    public void setOnToggledListener(OnToggledListener onToggledListener) {
-        this.onToggledListener = onToggledListener;
-    }
-
     public int getColorOn() {
         return colorOn;
     }
@@ -485,12 +471,9 @@ public class LabeledSwitch extends View {
         invalidate();
     }
 
-    public boolean isOn() {
-        return isOn;
-    }
-
+    @Override
     public void setOn(boolean on) {
-        isOn = on;
+        super.setOn(on);
         if(isOn) {
             thumbBounds.set(width - padding - thumbRadii, padding, width - padding, height - padding);
         } else {
@@ -506,10 +489,5 @@ public class LabeledSwitch extends View {
     public void setColorDisabled(int colorDisabled) {
         this.colorDisabled = colorDisabled;
         invalidate();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
     }
 }

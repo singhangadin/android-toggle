@@ -16,7 +16,7 @@
 
 package com.github.angads25.toggle.interfaces;
 
-import com.github.angads25.toggle.LabeledSwitch;
+import com.github.angads25.toggle.ToggleableView;
 
 /**
  * <p>
@@ -26,5 +26,5 @@ import com.github.angads25.toggle.LabeledSwitch;
 
 public interface OnToggledListener {
 
-    void onSwitched(LabeledSwitch labeledSwitch, boolean isOn);
+    void onSwitched(ToggleableView toggleableView, boolean isOn);
 }
