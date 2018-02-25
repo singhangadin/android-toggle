@@ -155,7 +155,6 @@ public class LabeledSwitch extends ToggleableView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        float scaledSizeInPixels = textSize * getResources().getDisplayMetrics().scaledDensity;
         paint.setTextSize(textSize);
 
 //      Drawing Switch background here
@@ -201,11 +200,11 @@ public class LabeledSwitch extends ToggleableView {
         String MAX_CHAR = "N";
         float textCenter = paint.measureText(MAX_CHAR) / 2;
         if(isOn) {
-            int alpha = (int)(((thumbBounds.centerX() - (width / 2)) / (thumbOnCenterX - (width / 2))) * 255);
+            int alpha = (int)(((thumbBounds.centerX() - (width >>> 1)) / (thumbOnCenterX - (width >>> 1))) * 255);
             int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
             paint.setColor(offColor);
 
-            int maxSize = width - (2 * padding) - (2 * thumbRadii);
+            int maxSize = width - (padding << 1) - (thumbRadii << 1);
 
 //            float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
 
@@ -214,10 +213,10 @@ public class LabeledSwitch extends ToggleableView {
 //            int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
 //            paint.setColor(onColor);
 
-            float centerX = (((padding / 2) + maxSize) - padding) / 2;
-            canvas.drawText(labelOn, padding + centerX - (paint.measureText(labelOn) / 2), (height / 2) + textCenter, paint);
+            float centerX = (((padding >>> 1) + maxSize) - padding) >>> 1;
+            canvas.drawText(labelOn, padding + centerX - (paint.measureText(labelOn) / 2), (height >>> 1) + textCenter, paint);
         } else {
-            int alpha = (int)((((width / 2) - thumbBounds.centerX()) / ((width / 2) - thumbOffCenterX)) * 255);
+            int alpha = (int)((((width >>> 1) - thumbBounds.centerX()) / ((width >>> 1) - thumbOffCenterX)) * 255);
             int onColor;
             if(isEnabled()) {
                 onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
@@ -234,8 +233,8 @@ public class LabeledSwitch extends ToggleableView {
 //            int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
 //            paint.setColor(offColor);
 
-            float centerX = (width - padding - ((padding + (padding / 2)) + (2 * thumbRadii))) / 2;
-            canvas.drawText(labelOff, (padding + (padding / 2)) + (2 * thumbRadii) + centerX - (paint.measureText(labelOff) / 2), (height / 2) + textCenter, paint);
+            float centerX = (width - padding - ((padding + (padding >>> 1)) + (thumbRadii << 1))) >>> 1;
+            canvas.drawText(labelOff, (padding + (padding >>> 1)) + (thumbRadii << 1) + centerX - (paint.measureText(labelOff) / 2), (height >>> 1) + textCenter, paint);
         }
 
 //      Drawing Switch Thumb here
@@ -286,9 +285,9 @@ public class LabeledSwitch extends ToggleableView {
 
         setMeasuredDimension(width, height);
 
-        outerRadii = Math.min(width, height) / 2;
+        outerRadii = Math.min(width, height) >>> 1;
         thumbRadii = (int) (Math.min(width, height) / (2.88f));
-        padding = (height - thumbRadii) / 2;
+        padding = (height - thumbRadii) >>> 1;
 
         thumbBounds.set(width - padding - thumbRadii, padding, width - padding, height - padding);
         thumbOnCenterX = thumbBounds.centerX();
@@ -302,11 +301,11 @@ public class LabeledSwitch extends ToggleableView {
             thumbBounds.set(padding, padding, padding + thumbRadii, height - padding);
         }
 
-        leftBgArc.set(0,0, 2 * outerRadii, height);
-        rightBgArc.set(width - (2 * outerRadii),0, width, height);
+        leftBgArc.set(0,0, outerRadii << 1, height);
+        rightBgArc.set(width - (outerRadii << 1),0, width, height);
 
-        leftFgArc.set(padding / 10,padding / 10, (2 * outerRadii)- (padding / 10), height - (padding / 10));
-        rightFgArc.set(width - (2 * outerRadii) + (padding / 10),padding / 10, width - (padding / 10), height - (padding / 10));
+        leftFgArc.set(padding / 10,padding / 10, (outerRadii << 1)- (padding / 10), height - (padding / 10));
+        rightFgArc.set(width - (outerRadii << 1) + (padding / 10),padding / 10, width - (padding / 10), height - (padding / 10));
     }
 
     @Override
@@ -355,14 +354,14 @@ public class LabeledSwitch extends ToggleableView {
 
                 case MotionEvent.ACTION_MOVE: {
                     // MOVE THUMB TO THIS POSITION
-                    if (x - (thumbRadii / 2) > padding && x + (thumbRadii / 2) < width - padding) {
-//                         Uncommenting this toggle switch back to last state on quick swipe actions.
+                    if (x - (thumbRadii >>> 1) > padding && x + (thumbRadii >>> 1) < width - padding) {
+//                        Uncommenting this toggle switch back to last state on quick swipe actions.
 //                        if (x >= width / 2) {
 //                            isOn = true;
 //                        } else {
 //                            isOn = false;
 //                        }
-                        thumbBounds.set(x - (thumbRadii / 2), thumbBounds.top, x + (thumbRadii / 2), thumbBounds.bottom);
+                        thumbBounds.set(x - (thumbRadii >>> 1), thumbBounds.top, x + (thumbRadii >>> 1), thumbBounds.bottom);
                         invalidate();
                     }
                     return true;
@@ -373,11 +372,11 @@ public class LabeledSwitch extends ToggleableView {
                     long endTime = System.currentTimeMillis();
                     long span = endTime - startTime;
                     if (span < 200) {
-                        // JUST TOGGLE THE CURRENT SELECTION
-                        // USING PERFORM CLICK FOR ACCESSIBILITY SUPPORT
+//                        JUST TOGGLE THE CURRENT SELECTION
+//                        USING PERFORM CLICK FOR ACCESSIBILITY SUPPORT
                         performClick();
                     } else {
-                        if (x >= width / 2) {
+                        if (x >= width >>> 1) {
                             // MOVE SWITCH TO RIGHT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
                             switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -393,7 +392,7 @@ public class LabeledSwitch extends ToggleableView {
                             switchColor.start();
                             isOn = true;
                         } else {
-                            // MOVE SWITCH TO LEFT
+//                            MOVE SWITCH TO LEFT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
                             switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                 @Override
