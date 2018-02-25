@@ -82,9 +82,8 @@ public class LabeledSwitchActivity extends AppCompatActivity {
             }, delay);
         }
 
+        labeledSwitches[2].setTypeface(openSansBold);
         labeledSwitches[3].setTypeface(openSansBold);
-        labeledSwitches[4].setTypeface(openSansBold);
-        labeledSwitches[5].setTypeface(openSansBold);
     }
 
     @Override

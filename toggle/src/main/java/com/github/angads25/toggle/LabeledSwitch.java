@@ -339,6 +339,9 @@ public class LabeledSwitch extends ToggleableView {
             switchColor.start();
         }
         isOn =! isOn;
+        if(onToggledListener != null) {
+            onToggledListener.onSwitched(this, isOn);
+        }
         return true;
     }
 
@@ -407,11 +410,11 @@ public class LabeledSwitch extends ToggleableView {
                             switchColor.start();
                             isOn = false;
                         }
+                        if(onToggledListener != null) {
+                            onToggledListener.onSwitched(this, isOn);
+                        }
                     }
                     invalidate();
-                    if(onToggledListener != null) {
-                        onToggledListener.onSwitched(this, isOn);
-                    }
                     return true;
                 }
 
