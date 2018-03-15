@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.angads25.toggledemo;
+package com.github.angads25.toggle.interfaces;
 
-import android.app.Application;
+import android.view.View;
 
-import com.squareup.leakcanary.LeakCanary;
-
-/**<p>
- * Created by Angad on 05-02-2018.
+/**
+ * <p>
+ * Created by Angad Singh on 25/2/18.
  * </p>
  */
 
-public class ToggleDemoApplication extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
-    }
+public interface OnStateChangedListener {
+    void onStateChanged(View switc, int state);
 }

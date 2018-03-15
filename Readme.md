@@ -24,7 +24,7 @@ Android Library for Custom Switches.
 1. Start by adding a Switch (eg. `LabeledSwitch`) in your xml layout as:
 
     ```xml
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

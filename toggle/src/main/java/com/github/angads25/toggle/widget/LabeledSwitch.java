@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.angads25.toggle;
+package com.github.angads25.toggle.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -27,6 +27,9 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
+import com.github.angads25.toggle.R;
+import com.github.angads25.toggle.model.ToggleableView;
 
 /**
  * <p>
@@ -490,6 +493,24 @@ public class LabeledSwitch extends ToggleableView {
 
     public void setColorDisabled(int colorDisabled) {
         this.colorDisabled = colorDisabled;
+        invalidate();
+    }
+
+    public int getColorBorder() {
+        return colorBorder;
+    }
+
+    public void setColorBorder(int colorBorder) {
+        this.colorBorder = colorBorder;
+        invalidate();
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = (int)(textSize * getResources().getDisplayMetrics().scaledDensity);
         invalidate();
     }
 }

@@ -16,7 +16,7 @@
 
 package com.github.angads25.toggle.interfaces;
 
-import com.github.angads25.toggle.ToggleableView;
+import com.github.angads25.toggle.model.ToggleableView;
 
 /**
  * <p>
