@@ -53,7 +53,6 @@ public class LabeledSwitch extends View {
     private int thumbRadii;
 
     private boolean isOn;
-    private boolean enabled;
 
     private Paint paint;
 
@@ -99,7 +98,6 @@ public class LabeledSwitch extends View {
         this.labelOn = "ON";
         this.labelOff = "OFF";
 
-        this.enabled = true;
         this.textSize = (int)(12f * getResources().getDisplayMetrics().scaledDensity);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -156,8 +154,6 @@ public class LabeledSwitch extends View {
             } else if (attr == R.styleable.Toggle_android_textSize) {
                 int defaultTextSize = (int)(12f * getResources().getDisplayMetrics().scaledDensity);
                 textSize = tarr.getDimensionPixelSize(R.styleable.Toggle_android_textSize, defaultTextSize);
-            } else if(attr == R.styleable.Toggle_android_enabled) {
-                enabled = tarr.getBoolean(R.styleable.Toggle_android_enabled, false);
             }
         }
     }
@@ -506,10 +502,5 @@ public class LabeledSwitch extends View {
     public void setColorDisabled(int colorDisabled) {
         this.colorDisabled = colorDisabled;
         invalidate();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
     }
 }

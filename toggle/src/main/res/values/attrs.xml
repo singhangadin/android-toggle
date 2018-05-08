@@ -31,7 +31,5 @@
             format="boolean"/>
 
         <attr name="android:textSize"/>
-        
-        <attr name="android:enabled"/>
     </declare-styleable>
 </resources>
