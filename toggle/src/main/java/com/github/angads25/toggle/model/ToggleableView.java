@@ -36,7 +36,6 @@ public class ToggleableView extends View {
     protected int state;
 
     protected boolean isOn;
-    protected boolean enabled;
 
     protected OnToggledListener onToggledListener;
     protected OnStateChangedListener onStateChangedListener;
@@ -67,11 +66,6 @@ public class ToggleableView extends View {
 
     public void setOn(boolean on) {
         isOn = on;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
     }
 
     public void setOnToggledListener(OnToggledListener onToggledListener) {

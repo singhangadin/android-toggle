@@ -92,7 +92,6 @@ public class LabeledSwitch extends ToggleableView {
         this.labelOn = "ON";
         this.labelOff = "OFF";
 
-        this.enabled = true;
         this.textSize = (int)(12f * getResources().getDisplayMetrics().scaledDensity);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -149,8 +148,6 @@ public class LabeledSwitch extends ToggleableView {
             } else if (attr == R.styleable.Toggle_android_textSize) {
                 int defaultTextSize = (int)(12f * getResources().getDisplayMetrics().scaledDensity);
                 textSize = tarr.getDimensionPixelSize(R.styleable.Toggle_android_textSize, defaultTextSize);
-            } else if(attr == R.styleable.Toggle_android_enabled) {
-                enabled = tarr.getBoolean(R.styleable.Toggle_android_enabled, false);
             }
         }
     }
