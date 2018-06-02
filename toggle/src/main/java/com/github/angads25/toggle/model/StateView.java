@@ -36,8 +36,6 @@ public class StateView extends View {
 
     protected int[] states;
 
-    protected boolean enabled;
-
     protected OnStateChangedListener onStateChangedListener;
 
     public StateView(Context context) {
@@ -66,16 +64,6 @@ public class StateView extends View {
 
     public void setStates(int[] states) {
         this.states = states;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public void setOnStateChangedListener(OnStateChangedListener onStateChangedListener) {
