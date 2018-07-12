@@ -379,13 +379,10 @@ public class LabeledSwitch extends ToggleableView {
                         if (x >= width >>> 1) {
                             // MOVE SWITCH TO RIGHT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
-                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator animation) {
-                                    float value = (float) animation.getAnimatedValue();
-                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                    invalidate();
-                                }
+                            switchColor.addUpdateListener(animation -> {
+                                float value = (float) animation.getAnimatedValue();
+                                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                                invalidate();
                             });
                             switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
                             switchColor.setDuration(250);
@@ -394,13 +391,10 @@ public class LabeledSwitch extends ToggleableView {
                         } else {
 //                            MOVE SWITCH TO LEFT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
-                            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator animation) {
-                                    float value = (float) animation.getAnimatedValue();
-                                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                                    invalidate();
-                                }
+                            switchColor.addUpdateListener(animation -> {
+                                float value = (float) animation.getAnimatedValue();
+                                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                                invalidate();
                             });
                             switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
                             switchColor.setDuration(250);

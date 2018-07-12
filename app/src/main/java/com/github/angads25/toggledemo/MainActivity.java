@@ -21,19 +21,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements
-        View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.switch_labeled).setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View view) {
+    @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.switch_labeled: {
                 startActivity(new Intent(MainActivity.this, LabeledSwitchActivity.class));

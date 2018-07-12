@@ -33,12 +33,9 @@ public class LabeledSwitchActivity extends AppCompatActivity {
     private volatile boolean stopped = false;
 
     private int[] switches = {
-        R.id.switch1,
-        R.id.switch2,
-        R.id.switch4,
-        R.id.switch5,
-        R.id.switch7,
-        R.id.switch8,
+        R.id.switch1, R.id.switch2,
+        R.id.switch4, R.id.switch5,
+        R.id.switch7, R.id.switch8,
     };
 
     private LabeledSwitch[] labeledSwitches;
