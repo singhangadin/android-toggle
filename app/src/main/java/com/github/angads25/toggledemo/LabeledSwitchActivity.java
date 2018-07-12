@@ -30,6 +30,7 @@ import java.util.TimerTask;
 
 public class LabeledSwitchActivity extends AppCompatActivity {
     private Timer timers[];
+    private volatile boolean stopped = false;
 
     private int[] switches = {
         R.id.switch1,
@@ -63,19 +64,14 @@ public class LabeledSwitchActivity extends AppCompatActivity {
             timerTasks[i] = new TimerTask() {
                 @Override
                 public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            labeledSwitches[finalI].performClick();
-                        }
-                    });
+                    runOnUiThread(() -> labeledSwitches[finalI].performClick());
                 }
             };
 
             int delay = (2 + new Random().nextInt(5)) * 1000;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+            Handler timerHandler = new Handler();
+            timerHandler.postDelayed(() -> {
+                if(!stopped) {
                     labeledSwitches[finalI].performClick();
                     timers[finalI].schedule(timerTasks[finalI], 0, 10000);
                 }
@@ -88,11 +84,12 @@ public class LabeledSwitchActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        super.onStop();
+        stopped = true;
         for (int i = 0; i < switches.length; i++) {
             if(timers[i] != null) {
                 timers[i].cancel();
             }
         }
+        super.onStop();
     }
 }

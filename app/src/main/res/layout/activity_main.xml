@@ -12,6 +12,5 @@
         android:id="@+id/switch_labeled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Labeled Switch"/>
-
+        android:text="@string/label_labeled_switch"/>
 </android.support.v7.widget.LinearLayoutCompat>

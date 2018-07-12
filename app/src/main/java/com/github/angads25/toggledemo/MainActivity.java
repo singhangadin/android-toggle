@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (view.getId()) {
             case R.id.switch_labeled: {
                 startActivity(new Intent(MainActivity.this, LabeledSwitchActivity.class));
+                break;
             }
         }
     }

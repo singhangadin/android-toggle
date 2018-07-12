@@ -316,26 +316,20 @@ public class LabeledSwitch extends ToggleableView {
         super.performClick();
         if (isOn) {
             ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
-            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float value = (float) animation.getAnimatedValue();
-                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                    invalidate();
-                }
+            switchColor.addUpdateListener(animation -> {
+                float value = (float) animation.getAnimatedValue();
+                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                invalidate();
             });
             switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
             switchColor.setDuration(250);
             switchColor.start();
         } else {
             ValueAnimator switchColor = ValueAnimator.ofFloat(padding, width - padding - thumbRadii);
-            switchColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float value = (float) animation.getAnimatedValue();
-                    thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
-                    invalidate();
-                }
+            switchColor.addUpdateListener(animation -> {
+                float value = (float) animation.getAnimatedValue();
+                thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
+                invalidate();
             });
             switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
             switchColor.setDuration(250);
