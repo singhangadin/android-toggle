@@ -14,7 +14,7 @@ import com.github.angads25.toggle.model.StateView;
  * </p>
  */
 
-public class NStateSwitch extends StateView {
+class NStateSwitch extends StateView {
     private int padding;
 
     private Paint paint;
@@ -41,13 +41,11 @@ public class NStateSwitch extends StateView {
         paint.setAntiAlias(true);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int desiredWidth = getResources().getDimensionPixelSize(R.dimen.default_width);
         int desiredHeight = getResources().getDimensionPixelSize(R.dimen.default_height);
 
@@ -77,7 +75,7 @@ public class NStateSwitch extends StateView {
         thumbRadii = (int) (Math.min(width, height) / (2.88f));
         padding = (height - thumbRadii) >>> 1;
 
-        int sectionWidth = (width - (2 * (padding + thumbRadii)))/ states.length;
+        int sectionWidth = (width - (2 * (padding + thumbRadii))) / states.length;
 
     }
 }

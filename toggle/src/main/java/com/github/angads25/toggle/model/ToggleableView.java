@@ -69,8 +69,7 @@ public class ToggleableView extends View {
         isOn = on;
     }
 
-    @Override
-    public boolean isEnabled() {
+    @Override public boolean isEnabled() {
         return enabled;
     }
 

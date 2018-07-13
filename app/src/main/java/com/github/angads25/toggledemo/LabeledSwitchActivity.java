@@ -42,8 +42,7 @@ public class LabeledSwitchActivity extends AppCompatActivity {
 
     private TimerTask[] timerTasks;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_labeled_switch);
 
