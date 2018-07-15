@@ -155,8 +155,7 @@ public class LabeledSwitch extends ToggleableView {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         paint.setTextSize(textSize);
 
@@ -207,6 +206,7 @@ public class LabeledSwitch extends ToggleableView {
             int alpha = (int)((((width >>> 1) - thumbBounds.centerX()) / ((width >>> 1) - thumbOffCenterX)) * 255);
             int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
             paint.setColor(onColor);
+
 //            int maxSize = width - (2 * thumbRadii);
 //            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
 
@@ -283,10 +283,9 @@ public class LabeledSwitch extends ToggleableView {
         }
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int desiredWidth = getResources().getDimensionPixelSize(R.dimen.default_width);
-        int desiredHeight = getResources().getDimensionPixelSize(R.dimen.default_height);
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int desiredWidth = getResources().getDimensionPixelSize(R.dimen.labeled_default_width);
+        int desiredHeight = getResources().getDimensionPixelSize(R.dimen.labeled_default_height);
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);

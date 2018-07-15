@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="default_width">72dp</dimen>
-    <dimen name="default_height">32dp</dimen>
+    <dimen name="labeled_default_width">72dp</dimen>
+    <dimen name="labeled_default_height">32dp</dimen>
+    <dimen name="day_night_default_width">84dp</dimen>
+    <dimen name="day_night_default_height">48dp</dimen>
 </resources>

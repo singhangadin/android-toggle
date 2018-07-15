@@ -46,8 +46,8 @@ class NStateSwitch extends StateView {
     }
 
     @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int desiredWidth = getResources().getDimensionPixelSize(R.dimen.default_width);
-        int desiredHeight = getResources().getDimensionPixelSize(R.dimen.default_height);
+        int desiredWidth = getResources().getDimensionPixelSize(R.dimen.labeled_default_width);
+        int desiredHeight = getResources().getDimensionPixelSize(R.dimen.labeled_default_height);
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);

@@ -10,16 +10,33 @@
         android:icon="@mipmap/ic_launcher"
         android:name=".ToggleDemoApplication"
         android:roundIcon="@mipmap/ic_launcher_round">
-        <activity android:name="com.github.angads25.toggledemo.MainActivity">
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:label="Labeled Switch"
+            android:screenOrientation="portrait"
             android:name=".LabeledSwitchActivity"
             android:parentActivityName=".MainActivity"/>
+
+        <activity
+            android:label="DayNight Switch"
+            android:screenOrientation="portrait"
+            android:name=".DayNightActivity"
+            android:parentActivityName=".MainActivity"/>
+
+        <activity
+            android:label="Test Activity"
+            android:name=".TestActivity"
+            android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

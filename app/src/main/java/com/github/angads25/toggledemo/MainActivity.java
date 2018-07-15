@@ -28,12 +28,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.switch_labeled).setOnClickListener(this);
+        findViewById(R.id.switch_day_night).setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {
         switch (view.getId()) {
             case R.id.switch_labeled: {
                 startActivity(new Intent(MainActivity.this, LabeledSwitchActivity.class));
+                break;
+            }
+
+            case R.id.switch_day_night: {
+                startActivity(new Intent(MainActivity.this, DayNightActivity.class));
                 break;
             }
         }
