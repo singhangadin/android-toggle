@@ -23,7 +23,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -188,18 +187,23 @@ public class DayNightSwitch extends ToggleableView {
             int starColor = Color.argb(alpha, Color.red(stars), Color.green(stars), Color.blue(stars));
             paint.setColor(starColor);
 
-            canvas.drawCircle((width >> 1) + (thumbRadii >> 3), height - (height >> 2) + (thumbRadii >> 3), thumbRadii >> 3, paint);
-            canvas.drawCircle((width >> 1) + (thumbRadii / 10), (height >> 2) - (thumbRadii / 10), thumbRadii / 10, paint);
-            canvas.drawCircle(width - (thumbRadii / 1.5f), (height >> 1) - (thumbRadii >> 3), thumbRadii >> 3, paint);
-            canvas.drawCircle(width - (thumbRadii), (thumbRadii / 1.75f), thumbRadii / 10, paint);
-            canvas.drawCircle(width - (thumbRadii / 1.25f), height - (thumbRadii / 1.25f), thumbRadii / 10, paint);
-            canvas.drawCircle((width >> 1) + (thumbRadii / 1.5f), (height >> 1) - (thumbRadii >> 2), thumbRadii >> 4, paint);
-            canvas.drawCircle((width >> 1) + (thumbRadii), (height >> 1) + (thumbRadii >> 2), thumbRadii >> 4, paint);
+            float nightAnimScale = alpha / 255f;
+            canvas.drawCircle((width >> 1) + (thumbRadii >> 3), height - (height >> 2) + (thumbRadii >> 3), (thumbRadii >> 3) * nightAnimScale, paint);
+            canvas.drawCircle((width >> 1) + (thumbRadii / 10), (height >> 2) - (thumbRadii / 10), (thumbRadii / 10) * nightAnimScale, paint);
+            canvas.drawCircle(width - (thumbRadii / 1.5f), (height >> 1) - (thumbRadii >> 3), (thumbRadii >> 3) * nightAnimScale, paint);
+            canvas.drawCircle(width - (thumbRadii), (thumbRadii / 1.75f), (thumbRadii / 10) * nightAnimScale, paint);
+            canvas.drawCircle(width - (thumbRadii / 1.25f), height - (thumbRadii / 1.25f), (thumbRadii / 10) * nightAnimScale, paint);
+            canvas.drawCircle((width >> 1) + (thumbRadii / 1.5f), (height >> 1) - (thumbRadii >> 2), (thumbRadii >> 4) * nightAnimScale, paint);
+            canvas.drawCircle((width >> 1) + (thumbRadii), (height >> 1) + (thumbRadii >> 2), (thumbRadii >> 4) * nightAnimScale, paint);
         }
 
 //      Drawing Switch Thumb here
         {
+            canvas.save();
+
             int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            canvas.rotate((alpha / 255f) * 360, thumbBounds.centerX(), thumbBounds.centerY());
+
             int offColor = Color.argb(alpha, Color.red(sunOuter), Color.green(sunOuter), Color.blue(sunOuter));
             paint.setColor(offColor);
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
@@ -243,6 +247,8 @@ public class DayNightSwitch extends ToggleableView {
 
             paint.setColor(craterInnerColor);
             canvas.drawCircle(thumbBounds.centerX() + (thumbRadii >> 1), thumbBounds.centerY() - (thumbRadii / 2.75f), thumbRadii / 6, paint);
+
+            canvas.restore();
         }
 
         //Draw Sun here
