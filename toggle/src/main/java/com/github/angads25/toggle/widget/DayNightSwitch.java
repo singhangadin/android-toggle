@@ -128,6 +128,7 @@ public class DayNightSwitch extends ToggleableView {
             if(isEnabled()) {
                 int borderColor;
                 int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+                alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
                 borderColor = Color.argb(alpha, Color.red(parentOuter), Color.green(parentOuter), Color.blue(parentOuter));
                 paint.setColor(borderColor);
 
@@ -137,9 +138,10 @@ public class DayNightSwitch extends ToggleableView {
 
                 canvas.drawArc(leftFgArc, 90, 180, false, paint);
                 canvas.drawArc(rightFgArc, 90, -180, false, paint);
-                canvas.drawRect(outerRadii, padding >> 2, (width - outerRadii), height - (padding >> 2), paint);
+                canvas.drawRect(outerRadii, padding >>> 2, (width - outerRadii), height - (padding >>> 2), paint);
 
                 alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+                alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
                 borderColor = Color.argb(alpha, Color.red(parentDarkOuter), Color.green(parentDarkOuter), Color.blue(parentDarkOuter));
                 paint.setColor(borderColor);
 
@@ -149,7 +151,7 @@ public class DayNightSwitch extends ToggleableView {
 
                 canvas.drawArc(leftFgArc, 90, 180, false, paint);
                 canvas.drawArc(rightFgArc, 90, -180, false, paint);
-                canvas.drawRect(outerRadii, padding >> 2, (width - outerRadii), height - (padding >> 2), paint);
+                canvas.drawRect(outerRadii, padding >>> 2, (width - outerRadii), height - (padding >>> 2), paint);
             } else {
                 paint.setColor(colorDisabled);
                 canvas.drawArc(leftBgArc, 90, 180, false, paint);
@@ -159,6 +161,7 @@ public class DayNightSwitch extends ToggleableView {
 
             int onColor;
             int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
 
             if(isEnabled()) {
                 onColor = Color.argb(alpha, Color.red(parentInner), Color.green(parentInner), Color.blue(parentInner));
@@ -169,64 +172,68 @@ public class DayNightSwitch extends ToggleableView {
 
             canvas.drawArc(leftFgArc, 90, 180, false, paint);
             canvas.drawArc(rightFgArc, 90, -180, false, paint);
-            canvas.drawRect(outerRadii, padding >> 2, (width - outerRadii), height - (padding >> 2), paint);
+            canvas.drawRect(outerRadii, padding >>> 2, (width - outerRadii), height - (padding >>> 2), paint);
 
             alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
+
             int offColor = Color.argb(alpha, Color.red(parentDarkInner), Color.green(parentDarkInner), Color.blue(parentDarkInner));
             paint.setColor(offColor);
 
             canvas.drawArc(leftFgArc, 90, 180, false, paint);
             canvas.drawArc(rightFgArc, 90, -180, false, paint);
-            canvas.drawRect(outerRadii, padding >> 2, (width - outerRadii), height - (padding >> 2), paint);
+            canvas.drawRect(outerRadii, padding >>> 2, (width - outerRadii), height - (padding >>> 2), paint);
         }
 
 //      Drawing Stars
         {
             int alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
+
             int starColor = Color.argb(alpha, Color.red(stars), Color.green(stars), Color.blue(stars));
             paint.setColor(starColor);
 
             float nightAnimScale = alpha / 255f;
             canvas.drawCircle(
-                    (width >> 1) + ((thumbRadii >> 3) * nightAnimScale),
-                    (height >> 1) + ((height >> 2) + (thumbRadii >> 3) * nightAnimScale),
-                    (thumbRadii >> 3) * nightAnimScale,
+                    (width >>> 1) + ((thumbRadii >>> 3) * nightAnimScale),
+                    (height >>> 1) + ((height >>> 2) + (thumbRadii >>> 3) * nightAnimScale),
+                    (thumbRadii >>> 3) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >> 1) + ((thumbRadii / 10) * nightAnimScale),
-                    (((height >> 1)) >> 1) - ((thumbRadii / 10) * nightAnimScale),
+                    (width >>> 1) + ((thumbRadii / 10) * nightAnimScale),
+                    (((height >>> 1)) >>> 1) - ((thumbRadii / 10) * nightAnimScale),
                     (thumbRadii / 10) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >> 1) + ((width >> 1) - (thumbRadii / 1.5f) * nightAnimScale),
-                    (height >> 1) - ((thumbRadii >> 3) * nightAnimScale),
-                    (thumbRadii >> 3) * nightAnimScale,
+                    (width >>> 1) + ((width >>> 1) - (thumbRadii / 1.5f) * nightAnimScale),
+                    (height >>> 1) - ((thumbRadii >>> 3) * nightAnimScale),
+                    (thumbRadii >>> 3) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >> 1) + ((width >> 1) - (thumbRadii) * nightAnimScale),
-                    (height >> 1) - ((height >> 1) - (thumbRadii / 1.75f) * nightAnimScale),
+                    (width >>> 1) + ((width >>> 1) - (thumbRadii) * nightAnimScale),
+                    (height >>> 1) - ((height >>> 1) - (thumbRadii / 1.75f) * nightAnimScale),
                     (thumbRadii / 10) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >> 1) + ((width >> 1) - (thumbRadii / 1.25f) * nightAnimScale),
-                    (height >> 1) + ((height >> 1) - (thumbRadii / 1.25f) * nightAnimScale),
+                    (width >>> 1) + ((width >>> 1) - (thumbRadii / 1.25f) * nightAnimScale),
+                    (height >>> 1) + ((height >>> 1) - (thumbRadii / 1.25f) * nightAnimScale),
                     (thumbRadii / 10) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >> 1) + ((thumbRadii / 1.5f) * nightAnimScale),
-                    (height >> 1) - ((thumbRadii >> 2) * nightAnimScale),
-                    (thumbRadii >> 4) * nightAnimScale,
+                    (width >>> 1) + ((thumbRadii / 1.5f) * nightAnimScale),
+                    (height >>> 1) - ((thumbRadii >>> 2) * nightAnimScale),
+                    (thumbRadii >>> 4) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >> 1) + ((thumbRadii) * nightAnimScale),
-                    (height >> 1) + ((thumbRadii >> 2) * nightAnimScale),
-                    (thumbRadii >> 4) * nightAnimScale,
+                    (width >>> 1) + ((thumbRadii) * nightAnimScale),
+                    (height >>> 1) + ((thumbRadii >>> 2) * nightAnimScale),
+                    (thumbRadii >>> 4) * nightAnimScale,
                     paint
             );
         }
@@ -236,51 +243,54 @@ public class DayNightSwitch extends ToggleableView {
             canvas.save();
 
             int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
+
             canvas.rotate((alpha / 255f) * 360, thumbBounds.centerX(), thumbBounds.centerY());
 
-            int offColor = Color.argb(alpha, Color.red(sunOuter), Color.green(sunOuter), Color.blue(sunOuter));
-            paint.setColor(offColor);
+            int sunOuterColor = Color.argb(alpha, Color.red(sunOuter), Color.green(sunOuter), Color.blue(sunOuter));
+            paint.setColor(sunOuterColor);
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
 
-            int sunBorderColor = Color.argb(alpha, Color.red(sunInner), Color.green(sunInner), Color.blue(sunInner));
-            paint.setColor(sunBorderColor);
+            int sunInnerColor = Color.argb(alpha, Color.red(sunInner), Color.green(sunInner), Color.blue(sunInner));
+            paint.setColor(sunInnerColor);
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii - (thumbRadii / 6), paint);
 
             alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
 
-            int onColor;
+            int moonOuterColor;
             if(isEnabled()) {
-                onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(moonOuter), Color.green(moonOuter), Color.blue(moonOuter));
+                moonOuterColor = Color.argb(alpha, Color.red(moonOuter), Color.green(moonOuter), Color.blue(moonOuter));
             } else {
-                onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorDisabled), Color.green(colorDisabled), Color.blue(colorDisabled));
+                moonOuterColor = Color.argb(alpha, Color.red(colorDisabled), Color.green(colorDisabled), Color.blue(colorDisabled));
             }
-            paint.setColor(onColor);
+            paint.setColor(moonOuterColor);
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
 
-            int moonBorderColor = Color.argb(alpha, Color.red(moonInner), Color.green(moonInner), Color.blue(moonInner));
-            paint.setColor(moonBorderColor);
+            int moonInnerColor = Color.argb(alpha, Color.red(moonInner), Color.green(moonInner), Color.blue(moonInner));
+            paint.setColor(moonInnerColor);
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii - (thumbRadii / 6), paint);
 
             // Draw craters here
             int craterBorderColor = Color.argb(alpha, Color.red(moonOuter), Color.green(moonOuter), Color.blue(moonOuter));
             paint.setColor(craterBorderColor);
-            canvas.drawCircle(thumbBounds.centerX() - (thumbRadii >> 1), thumbBounds.centerY() - (thumbRadii >> 1), thumbRadii >> 2, paint);
+            canvas.drawCircle(thumbBounds.centerX() - (thumbRadii >>> 1), thumbBounds.centerY() - (thumbRadii >>> 1), thumbRadii >>> 2, paint);
 
             int craterInnerColor = Color.argb(alpha, Color.red(craterInner), Color.green(craterInner), Color.blue(craterInner));
             paint.setColor(craterInnerColor);
-            canvas.drawCircle(thumbBounds.centerX() - (thumbRadii >> 1), thumbBounds.centerY() - (thumbRadii >> 1), thumbRadii >> 4, paint);
+            canvas.drawCircle(thumbBounds.centerX() - (thumbRadii >>> 1), thumbBounds.centerY() - (thumbRadii >>> 1), thumbRadii >>> 4, paint);
 
             paint.setColor(craterBorderColor);
-            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii / 3), thumbBounds.centerY() + (thumbRadii >> 1), thumbRadii >> 2, paint);
+            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii / 3), thumbBounds.centerY() + (thumbRadii >>> 1), thumbRadii >>> 2, paint);
 
             paint.setColor(craterInnerColor);
-            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii / 3), thumbBounds.centerY() + (thumbRadii >> 1), thumbRadii >> 4, paint);
+            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii / 3), thumbBounds.centerY() + (thumbRadii >>> 1), thumbRadii >>> 4, paint);
 
             paint.setColor(craterBorderColor);
-            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii >> 1), thumbBounds.centerY() - (thumbRadii / 2.75f), thumbRadii / 3, paint);
+            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii >>> 1), thumbBounds.centerY() - (thumbRadii / 2.75f), thumbRadii / 3, paint);
 
             paint.setColor(craterInnerColor);
-            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii >> 1), thumbBounds.centerY() - (thumbRadii / 2.75f), thumbRadii / 6, paint);
+            canvas.drawCircle(thumbBounds.centerX() + (thumbRadii >>> 1), thumbBounds.centerY() - (thumbRadii / 2.75f), thumbRadii / 6, paint);
 
             canvas.restore();
         }
