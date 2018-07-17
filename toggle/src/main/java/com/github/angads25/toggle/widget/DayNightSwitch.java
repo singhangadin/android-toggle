@@ -92,7 +92,6 @@ public class DayNightSwitch extends ToggleableView {
 
     private void initView() {
         this.isOn = false;
-
         this.enabled = true;
 
         paint = new Paint();
@@ -382,14 +381,7 @@ public class DayNightSwitch extends ToggleableView {
                 }
 
                 case MotionEvent.ACTION_MOVE: {
-                    // MOVE THUMB TO THIS POSITION
                     if (x - (thumbRadii >>> 1) > padding && x + (thumbRadii >>> 1) < width - padding) {
-//                        Uncommenting this toggle switch back to last state on quick swipe actions.
-//                        if (x >= width / 2) {
-//                            isOn = true;
-//                        } else {
-//                            isOn = false;
-//                        }
                         thumbBounds.set(x - (thumbRadii >>> 1), thumbBounds.top, x + (thumbRadii >>> 1), thumbBounds.bottom);
                         invalidate();
                     }
@@ -401,12 +393,9 @@ public class DayNightSwitch extends ToggleableView {
                     long endTime = System.currentTimeMillis();
                     long span = endTime - startTime;
                     if (span < 200) {
-//                        JUST TOGGLE THE CURRENT SELECTION
-//                        USING PERFORM CLICK FOR ACCESSIBILITY SUPPORT
                         performClick();
                     } else {
                         if (x >= width >>> 1) {
-                            // MOVE SWITCH TO RIGHT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
                             switchColor.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
@@ -418,7 +407,6 @@ public class DayNightSwitch extends ToggleableView {
                             switchColor.start();
                             isOn = true;
                         } else {
-//                            MOVE SWITCH TO LEFT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
                             switchColor.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
