@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -73,6 +74,9 @@ public class DayNightSwitch extends ToggleableView {
     private float thumbOnCenterX;
     private float thumbOffCenterX;
 
+    private Path innerCloud;
+    private Path outerCloud;
+
     public DayNightSwitch(Context context) {
         super(context);
         initView();
@@ -96,6 +100,9 @@ public class DayNightSwitch extends ToggleableView {
 
         paint = new Paint();
         paint.setAntiAlias(true);
+
+        innerCloud = new Path();
+        outerCloud = new Path();
 
         leftBgArc = new RectF();
         rightBgArc = new RectF();
@@ -297,7 +304,10 @@ public class DayNightSwitch extends ToggleableView {
 
         //Draw Cloud here
         {
-
+            paint.setColor(cloudOuter);
+            canvas.drawPath(outerCloud, paint);
+            paint.setColor(cloudInner);
+            canvas.drawPath(innerCloud, paint);
         }
     }
 
@@ -349,6 +359,47 @@ public class DayNightSwitch extends ToggleableView {
 
         leftFgArc.set(padding / 4,padding / 4, (outerRadii << 1) - (padding / 4), height - (padding / 4));
         rightFgArc.set(width - (outerRadii << 1) + (padding / 4),padding / 4, width - (padding / 4), height - (padding / 4));
+
+        outerCloud.moveTo(
+                (width / 2) + (width / 8),
+                (height / 2) + (height / 3.5f)
+        );
+        outerCloud.lineTo(
+                (width / 2) - (width / 8),
+                (height / 2) + (height / 3.5f)
+        );
+        outerCloud.cubicTo(
+                (width / 2) - (width / 5),
+                (height / 2) + (height / 3.5f),
+                (width / 2) - (width / 5),
+                (height / 2) + (height / 20),
+                (width / 2) - (width / 8),
+                (height / 2) + (height / 20)
+        );
+        outerCloud.cubicTo(
+                (width / 2) - (width / 8),
+                (height / 2) - (height / 8),
+                (width / 2),
+                (height / 2) - (height / 8),
+                (width / 2),
+                (height / 2)
+        );
+        outerCloud.cubicTo(
+                (width / 2),
+                (height / 2) - (height / 12),
+                (width / 2) + (width / 10),
+                (height / 2) - (height / 12),
+                (width / 2) + (width / 10),
+                (height / 2) + (height / 16)
+        );
+        outerCloud.cubicTo(
+                (width / 2) + (width / 6),
+                (height / 2) + (height / 16) ,
+                (width / 2) + (width / 6),
+                (height / 2) + (height / 3.5f),
+                (width / 2) + (width / 8),
+                (height / 2) + (height / 3.5f)
+        );
     }
 
     @Override public boolean performClick() {
