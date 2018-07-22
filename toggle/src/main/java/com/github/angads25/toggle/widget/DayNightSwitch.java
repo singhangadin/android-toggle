@@ -39,25 +39,18 @@ import com.github.angads25.toggle.model.ToggleableView;
 
 public class DayNightSwitch extends ToggleableView {
 
-    private int stars = Color.parseColor("#FCFCFC");
-    private int sunInner = Color.parseColor("#F5EB42");
-    private int sunOuter = Color.parseColor("#E4C74D");
-    private int moonInner = Color.parseColor("#FFFDF2");
-    private int moonOuter = Color.parseColor("#DEE1C5");
-    private int cloudInner = Color.parseColor("#FFFFFF");
-    private int cloudOuter = Color.parseColor("#D4D4D2");
-    private int craterInner = Color.parseColor("#EFEEDA");
-    private int parentOuter = Color.parseColor("#81C0D5");
-    private int parentInner = Color.parseColor("#C0E6F6");
-    private int parentDarkOuter = Color.parseColor("#202020");
-    private int parentDarkInner = Color.parseColor("#484848");
-
     private int padding;
 
-    private int colorDisabled;
+    private int centerX;
+    private int centerY;
+
+    private int cloudCenterX;
+    private int cloudCenterY;
 
     private int outerRadii;
     private int thumbRadii;
+
+    private int colorDisabled;
 
     private Paint paint;
 
@@ -76,11 +69,18 @@ public class DayNightSwitch extends ToggleableView {
 
     private Path outerCloud;
 
-    private int centerX;
-    private int centerY;
-
-    private int cloudCenterX;
-    private int cloudCenterY;
+    private int stars = Color.parseColor("#FCFCFC");
+    private int sunInner = Color.parseColor("#F5EB42");
+    private int sunOuter = Color.parseColor("#E4C74D");
+    private int moonInner = Color.parseColor("#FFFDF2");
+    private int moonOuter = Color.parseColor("#DEE1C5");
+    private int cloudInner = Color.parseColor("#FFFFFF");
+    private int cloudOuter = Color.parseColor("#D4D4D2");
+    private int craterInner = Color.parseColor("#EFEEDA");
+    private int parentOuter = Color.parseColor("#81C0D5");
+    private int parentInner = Color.parseColor("#C0E6F6");
+    private int parentDarkOuter = Color.parseColor("#202020");
+    private int parentDarkInner = Color.parseColor("#484848");
 
     public DayNightSwitch(Context context) {
         super(context);
@@ -476,26 +476,26 @@ public class DayNightSwitch extends ToggleableView {
                         performClick();
                     } else {
                         if (x >= centerX) {
-                            ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
-                            switchColor.addUpdateListener(animation -> {
+                            ValueAnimator thumbAnimator = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
+                            thumbAnimator.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
                                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                                 invalidate();
                             });
-                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                            switchColor.setDuration(150);
-                            switchColor.start();
+                            thumbAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+                            thumbAnimator.setDuration(150);
+                            thumbAnimator.start();
                             isOn = true;
                         } else {
-                            ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
-                            switchColor.addUpdateListener(animation -> {
+                            ValueAnimator thumbAnimator = ValueAnimator.ofFloat((x < padding ? padding : x - thumbRadii), padding);
+                            thumbAnimator.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
                                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                                 invalidate();
                             });
-                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                            switchColor.setDuration(150);
-                            switchColor.start();
+                            thumbAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+                            thumbAnimator.setDuration(150);
+                            thumbAnimator.start();
                             isOn = false;
                         }
                         if(onToggledListener != null) {

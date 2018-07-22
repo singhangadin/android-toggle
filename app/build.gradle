@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 27
@@ -27,6 +28,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':toggle')
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
@@ -44,4 +47,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-accessibility:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso.idling:idling-concurrent:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+}
+repositories {
+    mavenCentral()
 }

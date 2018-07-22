@@ -77,7 +77,7 @@ public class ToggleableView extends View {
         this.onToggledListener = onToggledListener;
     }
 
-    public void setOnStateChangedListener(OnStateChangedListener onStateChangedListener) {
+    private void setOnStateChangedListener(OnStateChangedListener onStateChangedListener) {
         this.onStateChangedListener = onStateChangedListener;
     }
 }
