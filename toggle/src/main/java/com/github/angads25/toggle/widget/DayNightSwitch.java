@@ -74,8 +74,13 @@ public class DayNightSwitch extends ToggleableView {
     private float thumbOnCenterX;
     private float thumbOffCenterX;
 
-    private Path innerCloud;
     private Path outerCloud;
+
+    private int centerX;
+    private int centerY;
+
+    private int cloudCenterX;
+    private int cloudCenterY;
 
     public DayNightSwitch(Context context) {
         super(context);
@@ -101,7 +106,6 @@ public class DayNightSwitch extends ToggleableView {
         paint = new Paint();
         paint.setAntiAlias(true);
 
-        innerCloud = new Path();
         outerCloud = new Path();
 
         leftBgArc = new RectF();
@@ -129,8 +133,6 @@ public class DayNightSwitch extends ToggleableView {
 
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-//      Drawing Switch background here
         {
             if(isEnabled()) {
                 int borderColor;
@@ -192,7 +194,6 @@ public class DayNightSwitch extends ToggleableView {
             canvas.drawRect(outerRadii, padding >>> 2, (width - outerRadii), height - (padding >>> 2), paint);
         }
 
-//      Drawing Stars
         {
             int alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
@@ -202,53 +203,51 @@ public class DayNightSwitch extends ToggleableView {
 
             float nightAnimScale = alpha / 255f;
             canvas.drawCircle(
-                    (width >>> 1) + ((thumbRadii >>> 3) * nightAnimScale),
-                    (height >>> 1) + ((height >>> 2) + (thumbRadii >>> 3) * nightAnimScale),
+                    (centerX) + ((thumbRadii >>> 3) * nightAnimScale),
+                    (centerY) + ((height >>> 2) + (thumbRadii >>> 3) * nightAnimScale),
                     (thumbRadii >>> 3) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >>> 1) + ((thumbRadii / 10) * nightAnimScale),
-                    (((height >>> 1)) >>> 1) - ((thumbRadii / 10) * nightAnimScale),
+                    (centerX) + ((thumbRadii / 10) * nightAnimScale),
+                    (((centerY)) >>> 1) - ((thumbRadii / 10) * nightAnimScale),
                     (thumbRadii / 10) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >>> 1) + ((width >>> 1) - (thumbRadii / 1.5f) * nightAnimScale),
-                    (height >>> 1) - ((thumbRadii >>> 3) * nightAnimScale),
+                    (centerX) + ((centerX) - (thumbRadii / 1.5f) * nightAnimScale),
+                    (centerY) - ((thumbRadii >>> 3) * nightAnimScale),
                     (thumbRadii >>> 3) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >>> 1) + ((width >>> 1) - (thumbRadii) * nightAnimScale),
-                    (height >>> 1) - ((height >>> 1) - (thumbRadii / 1.75f) * nightAnimScale),
+                    (centerX) + ((centerX) - (thumbRadii) * nightAnimScale),
+                    (centerY) - ((centerY) - (thumbRadii / 1.75f) * nightAnimScale),
                     (thumbRadii / 10) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >>> 1) + ((width >>> 1) - (thumbRadii / 1.25f) * nightAnimScale),
-                    (height >>> 1) + ((height >>> 1) - (thumbRadii / 1.25f) * nightAnimScale),
+                    (centerX) + ((centerX) - (thumbRadii / 1.25f) * nightAnimScale),
+                    (centerY) + ((centerY) - (thumbRadii / 1.25f) * nightAnimScale),
                     (thumbRadii / 10) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >>> 1) + ((thumbRadii / 1.5f) * nightAnimScale),
-                    (height >>> 1) - ((thumbRadii >>> 2) * nightAnimScale),
+                    (centerX) + ((thumbRadii / 1.5f) * nightAnimScale),
+                    (centerY) - ((thumbRadii >>> 2) * nightAnimScale),
                     (thumbRadii >>> 4) * nightAnimScale,
                     paint
             );
             canvas.drawCircle(
-                    (width >>> 1) + ((thumbRadii) * nightAnimScale),
-                    (height >>> 1) + ((thumbRadii >>> 2) * nightAnimScale),
+                    (centerX) + ((thumbRadii) * nightAnimScale),
+                    (centerY) + ((thumbRadii >>> 2) * nightAnimScale),
                     (thumbRadii >>> 4) * nightAnimScale,
                     paint
             );
         }
 
-//      Drawing Switch Thumb here
         {
             canvas.save();
-
             int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
 
@@ -278,7 +277,6 @@ public class DayNightSwitch extends ToggleableView {
             paint.setColor(moonInnerColor);
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii - (thumbRadii / 6), paint);
 
-            // Draw craters here
             int craterBorderColor = Color.argb(alpha, Color.red(moonOuter), Color.green(moonOuter), Color.blue(moonOuter));
             paint.setColor(craterBorderColor);
             canvas.drawCircle(thumbBounds.centerX() - (thumbRadii >>> 1), thumbBounds.centerY() - (thumbRadii >>> 1), thumbRadii >>> 2, paint);
@@ -302,13 +300,69 @@ public class DayNightSwitch extends ToggleableView {
             canvas.restore();
         }
 
-        //Draw Cloud here
         {
-            paint.setColor(cloudOuter);
+            int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
+            alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
+            float dayAnimScale = alpha / 255f;
+
+            initOuterCloud(dayAnimScale);
+            int cloudOuterColor = Color.argb(alpha, Color.red(cloudOuter), Color.green(cloudOuter), Color.blue(cloudOuter));
+            paint.setColor(cloudOuterColor);
             canvas.drawPath(outerCloud, paint);
-            paint.setColor(cloudInner);
-            canvas.drawPath(innerCloud, paint);
+
+            int cloudInnerColor = Color.argb(alpha, Color.red(cloudInner), Color.green(cloudInner), Color.blue(cloudInner));
+            paint.setColor(cloudInnerColor);
+
+            canvas.save();
+            canvas.scale(0.8f, 0.8f, cloudCenterX + ((1 - dayAnimScale) * (width >>> 2)), cloudCenterY);
+            canvas.drawPath(outerCloud, paint);
+            canvas.restore();
         }
+    }
+
+    public void initOuterCloud(float dayAnimScale) {
+        float translationScale = 1 - dayAnimScale;
+        outerCloud.reset();
+        outerCloud.moveTo(
+                (cloudCenterX) + (width >>> 3) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height / 3.5f) - (centerY >>> 2)
+        );
+        outerCloud.lineTo(
+                (cloudCenterX) - (width >>> 3) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height / 3.5f) - (centerY >>> 2)
+        );
+        outerCloud.cubicTo(
+                (cloudCenterX) - (width / 5) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height / 3.5f) - (centerY >>> 2),
+                (cloudCenterX) - (width / 5) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height / 20) - (centerY >>> 2),
+                (cloudCenterX) - (width >>> 3) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height / 20) - (centerY >>> 2)
+        );
+        outerCloud.cubicTo(
+                (cloudCenterX) - (width >>> 3) + (translationScale * (width >>> 2)),
+                (cloudCenterY) - (height >>> 3) - (centerY >>> 2),
+                (cloudCenterX) + (translationScale * (width >>> 2)),
+                (cloudCenterY) - (height >>> 3) - (centerY >>> 2),
+                (cloudCenterX) + (translationScale * (width >>> 2)),
+                (cloudCenterY) - (centerY >>> 2)
+        );
+        outerCloud.cubicTo(
+                (cloudCenterX) + (translationScale * (width >>> 2)),
+                (cloudCenterY) - (height / 12) - (centerY >>> 2),
+                (cloudCenterX) + (width / 10) + (translationScale * (width >>> 2)),
+                (cloudCenterY) - (height / 12) - (centerY >>> 2),
+                (cloudCenterX) + (width / 10) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height >>> 4) - (centerY >>> 2)
+        );
+        outerCloud.cubicTo(
+                (cloudCenterX) + (width / 6) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height >>> 4) - (centerY >>> 2),
+                (cloudCenterX) + (width / 6) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height / 3.5f) - (centerY >>> 2),
+                (cloudCenterX) + (width >>> 3) + (translationScale * (width >>> 2)),
+                (cloudCenterY) + (height / 3.5f) - (centerY >>> 2)
+        );
     }
 
     @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -338,7 +392,10 @@ public class DayNightSwitch extends ToggleableView {
 
         setMeasuredDimension(width, height);
 
-        outerRadii = Math.min(width, height) >>> 1;
+        centerX = width >>> 1;
+        centerY = height >>> 1;
+
+        outerRadii = Math.min(centerX, centerY);
         thumbRadii = (int) (Math.min(width, height) / (2.88f));
         padding = (height - thumbRadii) >>> 1;
 
@@ -357,49 +414,11 @@ public class DayNightSwitch extends ToggleableView {
         leftBgArc.set(0,0, outerRadii << 1, height);
         rightBgArc.set(width - (outerRadii << 1),0, width, height);
 
-        leftFgArc.set(padding / 4,padding / 4, (outerRadii << 1) - (padding / 4), height - (padding / 4));
-        rightFgArc.set(width - (outerRadii << 1) + (padding / 4),padding / 4, width - (padding / 4), height - (padding / 4));
+        leftFgArc.set(padding >>> 2,padding >>> 2, (outerRadii << 1) - (padding >>> 2), height - (padding >>> 2));
+        rightFgArc.set(width - (outerRadii << 1) + (padding >>> 2),padding >>> 2, width - (padding >>> 2), height - (padding >>> 2));
 
-        outerCloud.moveTo(
-                (width / 2) + (width / 8),
-                (height / 2) + (height / 3.5f)
-        );
-        outerCloud.lineTo(
-                (width / 2) - (width / 8),
-                (height / 2) + (height / 3.5f)
-        );
-        outerCloud.cubicTo(
-                (width / 2) - (width / 5),
-                (height / 2) + (height / 3.5f),
-                (width / 2) - (width / 5),
-                (height / 2) + (height / 20),
-                (width / 2) - (width / 8),
-                (height / 2) + (height / 20)
-        );
-        outerCloud.cubicTo(
-                (width / 2) - (width / 8),
-                (height / 2) - (height / 8),
-                (width / 2),
-                (height / 2) - (height / 8),
-                (width / 2),
-                (height / 2)
-        );
-        outerCloud.cubicTo(
-                (width / 2),
-                (height / 2) - (height / 12),
-                (width / 2) + (width / 10),
-                (height / 2) - (height / 12),
-                (width / 2) + (width / 10),
-                (height / 2) + (height / 16)
-        );
-        outerCloud.cubicTo(
-                (width / 2) + (width / 6),
-                (height / 2) + (height / 16) ,
-                (width / 2) + (width / 6),
-                (height / 2) + (height / 3.5f),
-                (width / 2) + (width / 8),
-                (height / 2) + (height / 3.5f)
-        );
+        cloudCenterX = centerX;
+        cloudCenterY = centerY + (centerY >>> 2);
     }
 
     @Override public boolean performClick() {
@@ -456,7 +475,7 @@ public class DayNightSwitch extends ToggleableView {
                     if (span < 200) {
                         performClick();
                     } else {
-                        if (x >= width >>> 1) {
+                        if (x >= centerX) {
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
                             switchColor.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
