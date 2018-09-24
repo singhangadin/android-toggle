@@ -82,6 +82,11 @@ public class DayNightSwitch extends ToggleableView {
     private int parentDarkOuter = Color.parseColor("#202020");
     private int parentDarkInner = Color.parseColor("#484848");
 
+    /**
+     * Simple constructor to use when creating a view from code.
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     */
     public DayNightSwitch(Context context) {
         super(context);
         initView();
@@ -506,9 +511,7 @@ public class DayNightSwitch extends ToggleableView {
                     return true;
                 }
 
-                default: {
-                    return super.onTouchEvent(event);
-                }
+                default: return super.onTouchEvent(event);
             }
         } else {
             return false;

@@ -16,12 +16,15 @@
 
 package com.github.angads25.toggledemo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 
 import com.github.angads25.toggle.interfaces.OnToggledListener
 import com.github.angads25.toggle.model.ToggleableView
 import com.github.angads25.toggle.widget.DayNightSwitch
+import kotlinx.android.synthetic.main.activity_day_night.*
 
 /**
  * Created by Angad Singh on 14/07/18.
@@ -30,13 +33,29 @@ import com.github.angads25.toggle.widget.DayNightSwitch
 class DayNightActivity : AppCompatActivity(), OnToggledListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme)
+        } else {
+            setTheme(R.style.AppTheme)
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_day_night)
 
         val dayNightSwitch = findViewById<DayNightSwitch>(R.id.switch1)
-        dayNightSwitch.setOnToggledListener(this)
 
+        dayNightSwitch.isOn = AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES
+
+        dayNightSwitch.setOnToggledListener(this)
     }
 
-    override fun onSwitched(toggleableView: ToggleableView, isOn: Boolean) {}
+    override fun onSwitched(toggleableView: ToggleableView, isOn: Boolean) {
+        if(isOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            rootLayout.setBackgroundColor(Color.WHITE)
+
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            rootLayout.setBackgroundColor(Color.BLACK)
+        }
+    }
 }
