@@ -70,17 +70,40 @@ public class LabeledSwitch extends ToggleableView {
     private float thumbOnCenterX;
     private float thumbOffCenterX;
 
+    /**
+     * Simple constructor to use when creating a switch from code.
+     * @param context The Context the switch is running in, through which it can
+     *        access the current theme, resources, etc.
+     */
     public LabeledSwitch(Context context) {
         super(context);
         initView();
     }
 
+    /**
+     * Constructor that is called when inflating a switch from XML.
+     *
+     * @param context The Context the switch is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the switch.
+     */
     public LabeledSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
         initProperties(attrs);
     }
 
+    /**
+     * Perform inflation from XML and apply a class-specific base style from a
+     * theme attribute.
+     *
+     * @param context The Context the switch is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the switch.
+     * @param defStyleAttr An attribute in the current theme that contains a
+     *        reference to a style resource that supplies default values for
+     *        the switch. Can be 0 to not look for defaults.
+     */
     public LabeledSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
@@ -210,14 +233,6 @@ public class LabeledSwitch extends ToggleableView {
             int onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
             paint.setColor(onColor);
 
-//            int maxSize = width - (2 * thumbRadii);
-//            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
-
-//            Effective label text area
-//            canvas.drawRect((padding + (padding / 2)) + (2 * thumbRadii), padding, width - padding, height - padding, paint);
-//            int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
-//            paint.setColor(offColor);
-
             float centerX = (width - padding - ((padding + (padding >>> 1)) + (thumbRadii << 1))) >>> 1;
             canvas.drawText(labelOff, (padding + (padding >>> 1)) + (thumbRadii << 1) + centerX - (paint.measureText(labelOff) / 2), (height >>> 1) + textCenter, paint);
 
@@ -227,13 +242,6 @@ public class LabeledSwitch extends ToggleableView {
             paint.setColor(offColor);
 
             int maxSize = width - (padding << 1) - (thumbRadii << 1);
-
-//            float extraSpace = (maxSize - paint.measureText(labelOn)) / 2;
-
-//            Effective label text area
-//            canvas.drawRect(padding, padding, (padding / 2) + maxSize, height - padding, paint);
-//            int onColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
-//            paint.setColor(onColor);
 
             centerX = (((padding >>> 1) + maxSize) - padding) >>> 1;
             canvas.drawText(labelOn, padding + centerX - (paint.measureText(labelOn) / 2), (height >>> 1) + textCenter, paint);
@@ -256,14 +264,6 @@ public class LabeledSwitch extends ToggleableView {
                 onColor = Color.argb(alpha, Color.red(colorDisabled), Color.green(colorDisabled), Color.blue(colorDisabled));
             }
             paint.setColor(onColor);
-
-//            int maxSize = width - (2 * thumbRadii);
-//            float extraSpace = (maxSize - paint.measureText(labelOff)) / 2;
-
-//            Effective label text area
-//            canvas.drawRect((padding + (padding / 2)) + (2 * thumbRadii), padding, width - padding, height - padding, paint);
-//            int offColor = Color.argb(alpha < 0 ? 0 : alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
-//            paint.setColor(offColor);
 
             centerX = (width - padding - ((padding + (padding >>> 1)) + (thumbRadii << 1))) >>> 1;
             canvas.drawText(labelOff, (padding + (padding >>> 1)) + (thumbRadii << 1) + centerX - (paint.measureText(labelOff) / 2), (height >>> 1) + textCenter, paint);
@@ -340,7 +340,15 @@ public class LabeledSwitch extends ToggleableView {
         rightFgArc.set(width - (outerRadii << 1) + (padding / 10),padding / 10, width - (padding / 10), height - (padding / 10));
     }
 
-    @Override public boolean performClick() {
+    /**
+     * Call this view's OnClickListener, if it is defined.  Performs all normal
+     * actions associated with clicking: reporting accessibility event, playing
+     * a sound, etc.
+     *
+     * @return True there was an assigned OnClickListener that was called, false
+     *         otherwise is returned.
+     */
+    @Override public final boolean performClick() {
         super.performClick();
         if (isOn) {
             ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
@@ -370,7 +378,13 @@ public class LabeledSwitch extends ToggleableView {
         return true;
     }
 
-    @Override public boolean onTouchEvent(MotionEvent event) {
+    /**
+     * Method to handle touch screen motion events.
+     *
+     * @param event The motion event.
+     * @return True if the event was handled, false otherwise.
+     */
+    @Override public final boolean onTouchEvent(MotionEvent event) {
         if(isEnabled()) {
             float x = event.getX();
             switch (event.getAction()) {
@@ -380,14 +394,7 @@ public class LabeledSwitch extends ToggleableView {
                 }
 
                 case MotionEvent.ACTION_MOVE: {
-                    // MOVE THUMB TO THIS POSITION
                     if (x - (thumbRadii >>> 1) > padding && x + (thumbRadii >>> 1) < width - padding) {
-//                        Uncommenting this toggle switch back to last state on quick swipe actions.
-//                        if (x >= width / 2) {
-//                            isOn = true;
-//                        } else {
-//                            isOn = false;
-//                        }
                         thumbBounds.set(x - (thumbRadii >>> 1), thumbBounds.top, x + (thumbRadii >>> 1), thumbBounds.bottom);
                         invalidate();
                     }
@@ -399,12 +406,9 @@ public class LabeledSwitch extends ToggleableView {
                     long endTime = System.currentTimeMillis();
                     long span = endTime - startTime;
                     if (span < 200) {
-//                        JUST TOGGLE THE CURRENT SELECTION
-//                        USING PERFORM CLICK FOR ACCESSIBILITY SUPPORT
                         performClick();
                     } else {
                         if (x >= width >>> 1) {
-                            // MOVE SWITCH TO RIGHT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
                             switchColor.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
@@ -416,7 +420,6 @@ public class LabeledSwitch extends ToggleableView {
                             switchColor.start();
                             isOn = true;
                         } else {
-//                            MOVE SWITCH TO LEFT
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
                             switchColor.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
@@ -445,52 +448,107 @@ public class LabeledSwitch extends ToggleableView {
         }
     }
 
+    /**
+     * <p>Returns the color value for colorOn.</p>
+     *
+     * @return color value for label and thumb in off state and background in on state.
+     */
     public int getColorOn() {
         return colorOn;
     }
 
+    /**
+     * <p>Changes the on color value of this Switch.</p>
+     *
+     * @param colorOn color value for label and thumb in off state and background in on state.
+     */
     public void setColorOn(int colorOn) {
         this.colorOn = colorOn;
         invalidate();
     }
 
+    /**
+     * <p>Returns the color value for colorOff.</p>
+     *
+     * @return color value for label and thumb in on state and background in off state.
+     */
     public int getColorOff() {
         return colorOff;
     }
 
+    /**
+     * <p>Changes the off color value of this Switch.</p>
+     *
+     * @param colorOff color value for label and thumb in on state and background in off state.
+     */
     public void setColorOff(int colorOff) {
         this.colorOff = colorOff;
         invalidate();
     }
 
+    /**
+     * <p>Returns text label when switch is in on state.</p>
+     *
+     * @return text label when switch is in on state.
+     */
     public String getLabelOn() {
         return labelOn;
     }
 
+    /**
+     * <p>Changes text label when switch is in on state.</p>
+     *
+     * @param labelOn text label when switch is in on state.
+     */
     public void setLabelOn(String labelOn) {
         this.labelOn = labelOn;
         invalidate();
     }
 
+    /**
+     * <p>Returns text label when switch is in off state.</p>
+     *
+     * @return text label when switch is in off state.
+     */
     public String getLabelOff() {
         return labelOff;
     }
 
+    /**
+     * <p>Changes text label when switch is in off state.</p>
+     *
+     * @param labelOff text label when switch is in off state.
+     */
     public void setLabelOff(String labelOff) {
         this.labelOff = labelOff;
         invalidate();
     }
 
+    /**
+     * <p>Returns the typeface for Switch on/off labels.</p>
+     *
+     * @return the typeface for Switch on/off labels..
+     */
     public Typeface getTypeface() {
         return typeface;
     }
 
+    /**
+     * <p>Changes the typeface for Switch on/off labels.</p>
+     *
+     * @param typeface the typeface for Switch on/off labels.
+     */
     public void setTypeface(Typeface typeface) {
         this.typeface = typeface;
         paint.setTypeface(typeface);
         invalidate();
     }
 
+    /**
+     * <p>Changes the boolean state of this Switch.</p>
+     *
+     * @param on true to turn switch on, false to turn it off.
+     */
     @Override public void setOn(boolean on) {
         super.setOn(on);
         if(isOn) {
@@ -501,28 +559,58 @@ public class LabeledSwitch extends ToggleableView {
         invalidate();
     }
 
+    /**
+     * <p>Returns the color value for Switch disabled state.</p>
+     *
+     * @return color value used by background, border and thumb when switch is disabled.
+     */
     public int getColorDisabled() {
         return colorDisabled;
     }
 
+    /**
+     * <p>Changes the color value for Switch disabled state.</p>
+     *
+     * @param colorDisabled color value used by background, border and thumb when switch is disabled.
+     */
     public void setColorDisabled(int colorDisabled) {
         this.colorDisabled = colorDisabled;
         invalidate();
     }
 
+    /**
+     * <p>Returns the color value for Switch border.</p>
+     *
+     * @return color value used by Switch border.
+     */
     public int getColorBorder() {
         return colorBorder;
     }
 
+    /**
+     * <p>Changes the color value for Switch disabled state.</p>
+     *
+     * @param colorBorder color value used by Switch border.
+     */
     public void setColorBorder(int colorBorder) {
         this.colorBorder = colorBorder;
         invalidate();
     }
 
+    /**
+     * <p>Returns the text size for Switch on/off label.</p>
+     *
+     * @return text size for Switch on/off label.
+     */
     public int getTextSize() {
         return textSize;
     }
 
+    /**
+     * <p>Changes the text size for Switch on/off label.</p>
+     *
+     * @param textSize text size for Switch on/off label.
+     */
     public void setTextSize(int textSize) {
         this.textSize = (int)(textSize * getResources().getDisplayMetrics().scaledDensity);
         invalidate();

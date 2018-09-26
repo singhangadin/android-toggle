@@ -22,9 +22,22 @@ import com.github.angads25.toggle.model.ToggleableView;
  * <p>
  * Created by Angad Singh on 28/1/18.
  * </p>
+ *
+ * Interface definition for a callback to be invoked when a digital switch is either on/off.
+ *
+ * <p>This is a <a href="package-summary.html">event listener</a>
+ * whose event method is {@link #onSwitched(ToggleableView, boolean)}.
+ *
+ * @since 1.1.0
  */
 
 public interface OnToggledListener {
 
+    /**
+     * Called when a view changes it's state.
+     *
+     * @param toggleableView The view which either is on/off.
+     * @param isOn The on/off state of switch, true when switch turns on.
+     */
     void onSwitched(ToggleableView toggleableView, boolean isOn);
 }

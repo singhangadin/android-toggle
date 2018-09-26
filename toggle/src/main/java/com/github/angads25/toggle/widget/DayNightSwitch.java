@@ -38,7 +38,6 @@ import com.github.angads25.toggle.model.ToggleableView;
  */
 
 public class DayNightSwitch extends ToggleableView {
-
     private int padding;
 
     private int centerX;
@@ -83,8 +82,8 @@ public class DayNightSwitch extends ToggleableView {
     private int parentDarkInner = Color.parseColor("#484848");
 
     /**
-     * Simple constructor to use when creating a view from code.
-     * @param context The Context the view is running in, through which it can
+     * Simple constructor to use when creating a switch from code.
+     * @param context The Context the switch is running in, through which it can
      *        access the current theme, resources, etc.
      */
     public DayNightSwitch(Context context) {
@@ -92,12 +91,30 @@ public class DayNightSwitch extends ToggleableView {
         initView();
     }
 
+    /**
+     * Constructor that is called when inflating a switch from XML.
+     *
+     * @param context The Context the switch is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the switch.
+     */
     public DayNightSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
         initProperties(attrs);
     }
 
+    /**
+     * Perform inflation from XML and apply a class-specific base style from a
+     * theme attribute.
+     *
+     * @param context The Context the switch is running in, through which it can
+     *        access the current theme, resources, etc.
+     * @param attrs The attributes of the XML tag that is inflating the switch.
+     * @param defStyleAttr An attribute in the current theme that contains a
+     *        reference to a style resource that supplies default values for
+     *        the switch. Can be 0 to not look for defaults.
+     */
     public DayNightSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
@@ -325,7 +342,7 @@ public class DayNightSwitch extends ToggleableView {
         }
     }
 
-    public void initOuterCloud(float dayAnimScale) {
+    private void initOuterCloud(float dayAnimScale) {
         float translationScale = 1 - dayAnimScale;
         outerCloud.reset();
         outerCloud.moveTo(
@@ -426,7 +443,15 @@ public class DayNightSwitch extends ToggleableView {
         cloudCenterY = centerY + (centerY >>> 2);
     }
 
-    @Override public boolean performClick() {
+    /**
+     * Call this view's OnClickListener, if it is defined.  Performs all normal
+     * actions associated with clicking: reporting accessibility event, playing
+     * a sound, etc.
+     *
+     * @return True there was an assigned OnClickListener that was called, false
+     *         otherwise is returned.
+     */
+    @Override public final boolean performClick() {
         super.performClick();
         if (isOn) {
             ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
@@ -456,7 +481,13 @@ public class DayNightSwitch extends ToggleableView {
         return true;
     }
 
-    @Override public boolean onTouchEvent(MotionEvent event) {
+    /**
+     * Method to handle touch screen motion events.
+     *
+     * @param event The motion event.
+     * @return True if the event was handled, false otherwise.
+     */
+    @Override public final boolean onTouchEvent(MotionEvent event) {
         if(isEnabled()) {
             float x = event.getX();
             switch (event.getAction()) {
@@ -518,6 +549,11 @@ public class DayNightSwitch extends ToggleableView {
         }
     }
 
+    /**
+     * <p>Changes the boolean state of this Switch.</p>
+     *
+     * @param on true to turn switch on, false to turn it off.
+     */
     @Override public void setOn(boolean on) {
         super.setOn(on);
         if(isOn) {
