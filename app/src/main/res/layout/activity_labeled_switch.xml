@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2018 Angad Singh
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?layoutBackground"
     android:orientation="vertical"
     tools:context="com.github.angads25.toggledemo.MainActivity">
 
@@ -15,7 +31,7 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,16 +40,16 @@
             app:on="false"
             app:colorBorder="@color/colorAccent"/>
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:textSize="14sp"
-            app:on="true"
+            app:on="false"
             app:colorBorder="@color/colorAccent"/>
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +66,7 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +78,7 @@
             app:colorOn="#00c4a6"
             app:colorBorder="#00c4a6"/>
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,14 +90,14 @@
             app:colorOn="#00c4a6"
             app:colorBorder="#00c4a6"/>
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:textSize="14sp"
-            app:on="false"
             android:enabled="false"
+            app:on="false"
             app:textOn="ON"
             app:textOff="OFF"
             app:colorOn="#00c4a6"
@@ -94,7 +110,7 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch7"
             android:layout_width="82dp"
             android:layout_height="wrap_content"
@@ -106,7 +122,7 @@
             app:colorOn="@color/colorPrimary"
             app:colorBorder="#D3D3D3"/>
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch8"
             android:layout_width="82dp"
             android:layout_height="wrap_content"
@@ -119,7 +135,7 @@
             app:colorOn="@color/colorPrimary"
             app:colorBorder="@color/colorPrimary"/>
 
-        <com.github.angads25.toggle.LabeledSwitch
+        <com.github.angads25.toggle.widget.LabeledSwitch
             android:id="@+id/switch9"
             android:layout_width="82dp"
             android:layout_height="wrap_content"

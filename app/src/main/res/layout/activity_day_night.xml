@@ -17,22 +17,28 @@
 
 <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?layoutBackground"
     android:orientation="vertical"
-    tools:context="com.github.angads25.toggledemo.MainActivity">
+    android:background="?attr/layoutBackground"
+    tools:context="com.github.angads25.toggledemo.DayNightActivity">
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/switch_labeled"
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_labeled_switch"/>
+        android:orientation="horizontal"
+        android:gravity="center">
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/switch_day_night"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_day_night_switch"/>
+        <com.github.angads25.toggle.widget.DayNightSwitch
+            android:id="@+id/switch1"
+            android:layout_width="120dp"
+            android:layout_height="72dp"
+            android:layout_margin="16dp"
+            android:textSize="14sp"
+            app:on="false"
+            app:colorBorder="@color/colorAccent"/>
+    </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v7.widget.LinearLayoutCompat>

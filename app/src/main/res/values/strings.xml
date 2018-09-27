@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Toggle Demo</string>
+    <string name="label_labeled_switch">Labeled Switch</string>
+    <string name="label_day_night_switch">Day Night Switch</string>
 </resources>

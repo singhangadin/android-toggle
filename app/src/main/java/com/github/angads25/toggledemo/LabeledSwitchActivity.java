@@ -22,7 +22,7 @@ import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.github.angads25.toggle.LabeledSwitch;
+import com.github.angads25.toggle.widget.LabeledSwitch;
 
 import java.util.Random;
 import java.util.Timer;
@@ -30,22 +30,19 @@ import java.util.TimerTask;
 
 public class LabeledSwitchActivity extends AppCompatActivity {
     private Timer timers[];
+    private volatile boolean stopped = false;
 
     private int[] switches = {
-        R.id.switch1,
-        R.id.switch2,
-        R.id.switch4,
-        R.id.switch5,
-        R.id.switch7,
-        R.id.switch8,
+        R.id.switch1, R.id.switch2,
+        R.id.switch4, R.id.switch5,
+        R.id.switch7, R.id.switch8,
     };
 
     private LabeledSwitch[] labeledSwitches;
 
     private TimerTask[] timerTasks;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_labeled_switch);
 
@@ -63,37 +60,32 @@ public class LabeledSwitchActivity extends AppCompatActivity {
             timerTasks[i] = new TimerTask() {
                 @Override
                 public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            labeledSwitches[finalI].performClick();
-                        }
-                    });
+                    runOnUiThread(() -> labeledSwitches[finalI].performClick());
                 }
             };
 
             int delay = (2 + new Random().nextInt(5)) * 1000;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+            Handler timerHandler = new Handler();
+            timerHandler.postDelayed(() -> {
+                if(!stopped) {
                     labeledSwitches[finalI].performClick();
                     timers[finalI].schedule(timerTasks[finalI], 0, 10000);
                 }
             }, delay);
         }
 
+        labeledSwitches[2].setTypeface(openSansBold);
         labeledSwitches[3].setTypeface(openSansBold);
-        labeledSwitches[4].setTypeface(openSansBold);
-        labeledSwitches[5].setTypeface(openSansBold);
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
+        stopped = true;
         for (int i = 0; i < switches.length; i++) {
             if(timers[i] != null) {
                 timers[i].cancel();
             }
         }
+        super.onStop();
     }
 }

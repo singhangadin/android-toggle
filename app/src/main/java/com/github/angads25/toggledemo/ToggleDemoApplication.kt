@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-package com.github.angads25.toggledemo;
+package com.github.angads25.toggledemo
 
-import android.app.Application;
+import android.app.Application
 
-import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.LeakCanary
 
-/**<p>
+/**
  * Created by Angad on 05-02-2018.
- * </p>
  */
 
-public class ToggleDemoApplication extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
+class ToggleDemoApplication : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
+            return
         }
-        LeakCanary.install(this);
+        LeakCanary.install(this)
     }
 }

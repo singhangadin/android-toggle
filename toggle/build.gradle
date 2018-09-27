@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/angads25/android-toggle'
     gitUrl = 'https://github.com/angads25/android-toggle.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.1.0'
 
     developerId = 'angads25'
     developerName = 'Angad Singh'
@@ -25,12 +25,13 @@ ext {
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.1.0"
     }
     buildTypes {
         release {
@@ -38,10 +39,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 apply from: 'https://raw.githubusercontent.com/angads25/JCenter/master/installv1.gradle'

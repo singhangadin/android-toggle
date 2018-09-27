@@ -16,28 +16,27 @@
 
 package com.github.angads25.toggle.interfaces;
 
-import com.github.angads25.toggle.model.ToggleableView;
+import android.view.View;
 
 /**
  * <p>
- * Created by Angad Singh on 28/1/18.
+ * Created by Angad Singh on 25/2/18.
  * </p>
  *
- * Interface definition for a callback to be invoked when a digital switch is either on/off.
+ * Interface definition for a callback to be invoked when state of switch is changed.
  *
  * <p>This is a <a href="package-summary.html">event listener</a>
- * whose event method is {@link #onSwitched(ToggleableView, boolean)}.
+ * whose event method is {@link #onStateChanged(View, int)}.
  *
  * @since 1.1.0
  */
-
-public interface OnToggledListener {
+public interface OnStateChangedListener {
 
     /**
      * Called when a view changes it's state.
      *
-     * @param toggleableView The view which either is on/off.
-     * @param isOn The on/off state of switch, true when switch turns on.
+     * @param view The view whose state was changed.
+     * @param state The state of the view.
      */
-    void onSwitched(ToggleableView toggleableView, boolean isOn);
+    void onStateChanged(View view, int state);
 }
