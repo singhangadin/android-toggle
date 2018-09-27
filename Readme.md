@@ -16,7 +16,7 @@ Android Library for Custom Switches.
 
 * Library is also Available in MavenCentral, So just put this in your app dependencies to use it:
 ```gradle
-    implementation 'com.github.angads25:toggle:1.0.0'
+    implementation 'com.github.angads25:toggle:1.1.0'
 ```
 
 ### Usage
@@ -51,7 +51,11 @@ Android Library for Custom Switches.
 
 * Labeled Switch | Designed by - [Shweta Gupta](https://dribbble.com/shwetagupta)
 
-![Labeled Switch](https://raw.githubusercontent.com/Angads25/android-toggle/develop/screenshots/version%201/device-2018-02-21-233623.png)
+![Labeled Switch](https://raw.githubusercontent.com/Angads25/android-toggle/develop/screenshots/version%201/LabeledSwitch.png)
+
+* Day Night Switch | Designed by - [Ramakrishna V](https://dribbble.com/RamakrishnaUX)
+
+![Day Night Switch](https://raw.githubusercontent.com/Angads25/android-toggle/develop/screenshots/version%202/DayNightSwitch.gif)
 
 ### License
     Copyright (C) 2018 Angad Singh
