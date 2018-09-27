@@ -5,7 +5,7 @@ Android Library for Custom Switches.
 [Angad Singh](https://www.github.com/angads25) ([@angads25](https://www.twitter.com/angads25))
 
 ### Benchmark:
-[![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Build Status](https://travis-ci.org/Angads25/android-toggle.svg?branch=develop)](https://travis-ci.org/Angads25/android-toggle)
+[![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Build Status](https://travis-ci.org/Angads25/android-toggle.svg?branch=release)](https://travis-ci.org/Angads25/android-toggle)
 
 ### Mentions:
 [![Download](https://api.bintray.com/packages/angads25/maven/Toggle/images/download.svg)](https://bintray.com/angads25/maven/Toggle/_latestVersion) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle)
@@ -51,11 +51,11 @@ Android Library for Custom Switches.
 
 * Labeled Switch | Designed by - [Shweta Gupta](https://dribbble.com/shwetagupta)
 
-![Labeled Switch](https://raw.githubusercontent.com/Angads25/android-toggle/develop/screenshots/version%201/LabeledSwitch.png)
+![Labeled Switch](https://raw.githubusercontent.com/Angads25/android-toggle/release/screenshots/version%201/LabeledSwitch.png)
 
 * Day Night Switch | Designed by - [Ramakrishna V](https://dribbble.com/RamakrishnaUX)
 
-![Day Night Switch](https://raw.githubusercontent.com/Angads25/android-toggle/develop/screenshots/version%202/DayNightSwitch.gif)
+![Day Night Switch](https://raw.githubusercontent.com/Angads25/android-toggle/release/screenshots/version%202/DayNightSwitch.gif)
 
 ### License
     Copyright (C) 2018 Angad Singh
