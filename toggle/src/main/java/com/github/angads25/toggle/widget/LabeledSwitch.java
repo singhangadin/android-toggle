@@ -60,6 +60,13 @@ public class LabeledSwitch extends ToggleableView {
     private RectF thumbBounds;
 
     private RectF leftBgArc;
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        this.enabled = enabled;
+    }
+
     private RectF rightBgArc;
 
     private RectF leftFgArc;
