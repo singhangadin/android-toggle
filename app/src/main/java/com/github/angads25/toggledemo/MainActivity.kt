@@ -20,6 +20,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.github.angads25.toggle.widget.LabeledSwitch
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -29,12 +31,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         findViewById<View>(R.id.switch_labeled).setOnClickListener(this)
         findViewById<View>(R.id.switch_day_night).setOnClickListener(this)
+        findViewById<View>(R.id.btn_test).setOnClickListener(this)
+
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.switch_labeled -> startActivity(Intent(this@MainActivity, LabeledSwitchActivity::class.java))
             R.id.switch_day_night -> startActivity(Intent(this@MainActivity, DayNightActivity::class.java))
+            R.id.btn_test -> startActivity(Intent(this@MainActivity, TestActivity::class.java))
         }
     }
 }
