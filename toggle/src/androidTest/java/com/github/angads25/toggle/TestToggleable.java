@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2018 Angad Singh
+ * Copyright (C) 2020 Angad Singh
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.angads25.toggledemo
+package com.github.angads25.toggle;
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-/**
- * Created by Angad Singh on 14/07/18.
- */
-class TestActivity : AppCompatActivity() {
+import org.junit.runner.RunWith;
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
-    }
+@RunWith(AndroidJUnit4.class)
+public class TestToggleable {
+
 }

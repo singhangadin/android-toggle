@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<android.support.v7.widget.LinearLayoutCompat
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,15 +24,15 @@
     android:orientation="vertical"
     tools:context="com.github.angads25.toggledemo.MainActivity">
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/switch_labeled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_labeled_switch"/>
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/switch_day_night"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_day_night_switch"/>
-</android.support.v7.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>
