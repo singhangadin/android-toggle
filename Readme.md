@@ -40,7 +40,7 @@ Android Library for Custom Switches.
         LabeledSwitch labeledSwitch = findViewById(R.id.switch);
         labeledSwitch.setOnToggledListener(new OnToggledListener() {
             @Override
-            public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
+            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
                 // Implement your switching logic here
             }
         });
