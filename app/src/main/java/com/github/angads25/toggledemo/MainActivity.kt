@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.switch_labeled -> startActivity(Intent(this@MainActivity, LabeledSwitchActivity::class.java))
+            R.id.switch_labeled -> startActivity(Intent(this@MainActivity, TestActivity::class.java))
             R.id.switch_day_night -> startActivity(Intent(this@MainActivity, DayNightActivity::class.java))
         }
     }
