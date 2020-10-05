@@ -15,14 +15,23 @@
   ~ limitations under the License.
   -->
 
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#752BE6"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.github.angads25.toggle.widget.LabeledSwitch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:textSize="10sp"
+        app:enableText="false"
+        app:invertColors="false"
+        app:on="false"
+        app:colorOff="@color/color_white"
+        app:colorOn="@color/edit_profile_bottomsheet_bg"
+        app:colorBorder="@color/color_white"/>
+
 </androidx.appcompat.widget.LinearLayoutCompat>

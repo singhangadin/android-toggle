@@ -30,6 +30,12 @@
         <attr name="on"
             format="boolean"/>
 
+        <attr name="enableText"
+            format="boolean"/>
+
+        <attr name="invertColors"
+            format="boolean"/>
+
         <attr name="android:textSize"/>
         
         <attr name="android:enabled"/>
