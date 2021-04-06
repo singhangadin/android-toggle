@@ -134,7 +134,7 @@ public class LabeledSwitch extends ToggleableView {
         rightFgArc = new RectF();
         thumbBounds = new RectF();
 
-        this.colorOff = Color.parseColor("#FFFFFF");
+        this.colorOff = Color.parseColor("#FF0000");
         this.colorDisabled = Color.parseColor("#D3D3D3");
     }
 
@@ -146,7 +146,7 @@ public class LabeledSwitch extends ToggleableView {
             if (attr == R.styleable.Toggle_on) {
                 isOn = tarr.getBoolean(R.styleable.Toggle_on, false);
             } else if (attr == R.styleable.Toggle_colorOff) {
-                colorOff = tarr.getColor(R.styleable.Toggle_colorOff, Color.parseColor("#FFFFFF"));
+                colorOff = tarr.getColor(R.styleable.Toggle_colorOff, Color.parseColor("#FF0000"));
             } else if (attr == R.styleable.Toggle_colorBorder) {
                 int accentColor;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
