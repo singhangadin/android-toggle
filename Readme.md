@@ -3,12 +3,12 @@ Android Library for Custom Switches.
 
 ### Added feature
  1. Added different toggle and text color
-    app:colorText="#ffffff"
-    app:colorToggle="#ffffff"
+   - app:colorText="#ffffff"
+   - app:colorToggle="#ffffff"
 
  2. Added text modification option
-    app:textUpperCase
-    app:textLowerCase
+   - app:textUpperCase
+   - app:textLowerCase
 
 ### Developed by
 [Angad Singh](https://www.github.com/angads25) ([@angads25](https://www.twitter.com/angads25))
