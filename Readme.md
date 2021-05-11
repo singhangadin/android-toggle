@@ -17,15 +17,25 @@ Android Library for Custom Switches.
 [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14) [![Build Status](https://travis-ci.org/Angads25/android-toggle.svg?branch=release)](https://travis-ci.org/Angads25/android-toggle)
 
 ### Mentions:
-[![Download](https://api.bintray.com/packages/angads25/maven/Toggle/images/download.svg)](https://bintray.com/angads25/maven/Toggle/_latestVersion) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.angads25/toggle)
+[![](https://jitpack.io/v/jozsefmezei/android-toggle.svg)](https://jitpack.io/#jozsefmezei/android-toggle)
 
 ### Read all about internal classes and functions in the [wiki](https://github.com/Angads25/android-toggle/wiki).
 
 ### Installation
 
-* Library is also Available in MavenCentral, So just put this in your app dependencies to use it:
+Add it in your root build.gradle at the end of repositories:
 ```gradle
-    implementation 'com.github.angads25:toggle:1.1.0'
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+* Put this in your app dependencies:
+```gradle
+    implementation 'com.github.jozsefmezei:android-toggle:1.1.1'
 ```
 
 ### Usage
