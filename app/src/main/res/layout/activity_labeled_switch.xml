@@ -204,4 +204,21 @@
             app:colorOn="@color/colorPrimary"
             app:colorOff="#00c4a6"/>
     </android.support.v7.widget.LinearLayoutCompat>
+
+    <com.github.angads25.toggle.widget.LabeledSwitch
+        android:id="@+id/switch13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="12sp"
+        app:on="false"
+        app:textOn="start"
+        app:textOff="stop"
+        app:textUpperCase="true"
+        app:colorBorder="#11111100"
+        app:colorText="#ffffff"
+        app:colorToggle="#ffffff"
+        app:colorOn="@color/colorPrimary"
+        app:colorOff="#00c4a6"/>
+
 </android.support.v7.widget.LinearLayoutCompat>

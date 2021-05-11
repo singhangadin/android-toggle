@@ -76,6 +76,8 @@ public class LabeledSwitch extends ToggleableView {
     private float thumbOnCenterX;
     private float thumbOffCenterX;
 
+    protected boolean startAnimationFromTouchPosition = true;
+
     /**
      * Simple constructor to use when creating a switch from code.
      * @param context The Context the switch is running in, through which it can
@@ -244,7 +246,8 @@ public class LabeledSwitch extends ToggleableView {
         if(isOn) {
             int alpha = (int)((((width >>> 1) - thumbBounds.centerX()) / ((width >>> 1) - thumbOffCenterX)) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
-            int onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+            int onColor = textColor > Integer.MIN_VALUE ? Color.argb(alpha, Color.red(textColor), Color.green(textColor), Color.blue(textColor)) :
+                    Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
             paint.setColor(onColor);
 
             float centerX = (width - padding - ((padding + (padding >>> 1)) + (thumbRadii << 1))) >>> 1;
@@ -411,7 +414,7 @@ public class LabeledSwitch extends ToggleableView {
      */
     @Override public final boolean onTouchEvent(MotionEvent event) {
         if(isEnabled()) {
-            float x = event.getX();
+            float x = startAnimationFromTouchPosition ? event.getX() : thumbBounds.centerX();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
                     startTime = System.currentTimeMillis();
@@ -675,5 +678,14 @@ public class LabeledSwitch extends ToggleableView {
      */
     public void setTextLowerCase(boolean textLowerCase) {
         this.textLowerCase = textLowerCase;
+    }
+
+    /**
+     * <p>Start switch animation from start or from touch position. Default value is true.</p>
+     *
+     * @param startAnimationFromTouchPosition Start from touch position if it is true.
+     */
+    public void setStartAnimationFromTouchPosition(boolean startAnimationFromTouchPosition) {
+        this.startAnimationFromTouchPosition = startAnimationFromTouchPosition;
     }
 }

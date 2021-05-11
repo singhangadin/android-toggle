@@ -10,6 +10,9 @@ Android Library for Custom Switches.
    - app:textUpperCase
    - app:textLowerCase
 
+ 3. Start toggle animation from touched X position or from the toggle position
+  - setStartAnimationFromTouchPosition (only from code)
+
 ### Developed by
 [Angad Singh](https://www.github.com/angads25) ([@angads25](https://www.twitter.com/angads25))
 
