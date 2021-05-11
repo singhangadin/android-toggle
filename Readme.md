@@ -1,6 +1,15 @@
 # Toggle
 Android Library for Custom Switches.
 
+### Added feature
+ 1. Added different toggle and text color
+    app:colorText="#ffffff"
+    app:colorToggle="#ffffff"
+
+ 2. Added text modification option
+    app:textUpperCase
+    app:textLowerCase
+
 ### Developed by
 [Angad Singh](https://www.github.com/angads25) ([@angads25](https://www.twitter.com/angads25))
 
@@ -51,7 +60,7 @@ Android Library for Custom Switches.
 
 * Labeled Switch | Designed by - [Shweta Gupta](https://dribbble.com/shwetagupta)
 
-![Labeled Switch](https://raw.githubusercontent.com/Angads25/android-toggle/release/screenshots/version%201/LabeledSwitch.png)
+![Labeled Switch](https://raw.githubusercontent.com/jozsefmezei/android-toggle/release/screenshots/version%201/LabeledSwitch.png)
 
 * Day Night Switch | Designed by - [Ramakrishna V](https://dribbble.com/RamakrishnaUX)
 

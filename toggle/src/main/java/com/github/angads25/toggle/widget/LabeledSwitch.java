@@ -45,7 +45,8 @@ public class LabeledSwitch extends ToggleableView {
     private int colorBorder;
     private int colorDisabled;
 
-    private int textSize;
+    private int toggleColor = Integer.MIN_VALUE;
+    private int textColor = Integer.MIN_VALUE;
 
     private int outerRadii;
     private int thumbRadii;
@@ -56,6 +57,11 @@ public class LabeledSwitch extends ToggleableView {
 
     private String labelOn;
     private String labelOff;
+
+    private boolean textUpperCase;
+    private boolean textLowerCase;
+
+    private int textSize;
 
     private RectF thumbBounds;
 
@@ -155,6 +161,10 @@ public class LabeledSwitch extends ToggleableView {
                     accentColor = getResources().getColor(R.color.colorAccent);
                 }
                 colorBorder = tarr.getColor(R.styleable.Toggle_colorBorder, accentColor);
+            } else if (attr == R.styleable.Toggle_colorText) {
+                textColor = tarr.getColor(R.styleable.Toggle_colorText, Integer.MIN_VALUE);
+            } else if (attr == R.styleable.Toggle_colorToggle) {
+                toggleColor = tarr.getColor(R.styleable.Toggle_colorToggle, Integer.MIN_VALUE);
             } else if (attr == R.styleable.Toggle_colorOn) {
                 int accentColor;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -174,6 +184,10 @@ public class LabeledSwitch extends ToggleableView {
                 textSize = tarr.getDimensionPixelSize(R.styleable.Toggle_android_textSize, defaultTextSize);
             } else if(attr == R.styleable.Toggle_android_enabled) {
                 enabled = tarr.getBoolean(R.styleable.Toggle_android_enabled, false);
+            } else if(attr == R.styleable.Toggle_textLowerCase) {
+                textLowerCase = tarr.getBoolean(R.styleable.Toggle_textLowerCase, false);
+            } else if(attr == R.styleable.Toggle_textUpperCase) {
+                textUpperCase = tarr.getBoolean(R.styleable.Toggle_textUpperCase, false);
             }
         }
     }
@@ -234,54 +248,65 @@ public class LabeledSwitch extends ToggleableView {
             paint.setColor(onColor);
 
             float centerX = (width - padding - ((padding + (padding >>> 1)) + (thumbRadii << 1))) >>> 1;
-            canvas.drawText(labelOff, (padding + (padding >>> 1)) + (thumbRadii << 1) + centerX - (paint.measureText(labelOff) / 2), (height >>> 1) + textCenter, paint);
+            String text = textUpperCase ? labelOff.toUpperCase() : textLowerCase ? labelOff.toLowerCase() : labelOff;
+            canvas.drawText(text, (padding + (padding >>> 1)) + (thumbRadii << 1) + centerX - (paint.measureText(labelOff) / 2), (height >>> 1) + textCenter, paint);
 
             alpha = (int)(((thumbBounds.centerX() - (width >>> 1)) / (thumbOnCenterX - (width >>> 1))) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
-            int offColor = Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
+            int offColor = textColor > Integer.MIN_VALUE ? Color.argb(alpha, Color.red(textColor), Color.green(textColor), Color.blue(textColor)) :
+                           Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
             paint.setColor(offColor);
 
             int maxSize = width - (padding << 1) - (thumbRadii << 1);
 
             centerX = (((padding >>> 1) + maxSize) - padding) >>> 1;
-            canvas.drawText(labelOn, padding + centerX - (paint.measureText(labelOn) / 2), (height >>> 1) + textCenter, paint);
+            text = textUpperCase ? labelOn.toUpperCase() : textLowerCase ? labelOn.toLowerCase() : labelOn;
+            canvas.drawText(text, padding + centerX - (paint.measureText(labelOn) / 2), (height >>> 1) + textCenter, paint);
         } else {
             int alpha = (int)(((thumbBounds.centerX() - (width >>> 1)) / (thumbOnCenterX - (width >>> 1))) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
-            int offColor = Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
+            int offColor = textColor > Integer.MIN_VALUE ? Color.argb(alpha, Color.red(textColor), Color.green(textColor), Color.blue(textColor)) :
+                    Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
             paint.setColor(offColor);
 
             int maxSize = width - (padding << 1) - (thumbRadii << 1);
             float centerX = (((padding >>> 1) + maxSize) - padding) >>> 1;
-            canvas.drawText(labelOn, padding + centerX - (paint.measureText(labelOn) / 2), (height >>> 1) + textCenter, paint);
+            String text = textUpperCase ? labelOn.toUpperCase() : textLowerCase ? labelOn.toLowerCase() : labelOn;
+            canvas.drawText(text, padding + centerX - (paint.measureText(labelOn) / 2), (height >>> 1) + textCenter, paint);
 
             alpha = (int)((((width >>> 1) - thumbBounds.centerX()) / ((width >>> 1) - thumbOffCenterX)) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
             int onColor;
             if(isEnabled()) {
-                onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+                onColor = textColor > Integer.MIN_VALUE ? Color.argb(alpha, Color.red(textColor), Color.green(textColor), Color.blue(textColor)) :
+                        Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+
             } else {
                 onColor = Color.argb(alpha, Color.red(colorDisabled), Color.green(colorDisabled), Color.blue(colorDisabled));
             }
             paint.setColor(onColor);
 
             centerX = (width - padding - ((padding + (padding >>> 1)) + (thumbRadii << 1))) >>> 1;
-            canvas.drawText(labelOff, (padding + (padding >>> 1)) + (thumbRadii << 1) + centerX - (paint.measureText(labelOff) / 2), (height >>> 1) + textCenter, paint);
+            text = textUpperCase ? labelOff.toUpperCase() : textLowerCase ? labelOff.toLowerCase() : labelOff;
+            canvas.drawText(text, (padding + (padding >>> 1)) + (thumbRadii << 1) + centerX - (paint.measureText(labelOff) / 2), (height >>> 1) + textCenter, paint);
         }
 
 //      Drawing Switch Thumb here
         {
             int alpha = (int) (((thumbBounds.centerX() - thumbOffCenterX) / (thumbOnCenterX - thumbOffCenterX)) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
-            int offColor = Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
-            paint.setColor(offColor);
+            int thumbColor = toggleColor > Integer.MIN_VALUE ? Color.argb(alpha, Color.red(toggleColor), Color.green(toggleColor), Color.blue(toggleColor)) :
+                    Color.argb(alpha, Color.red(colorOff), Color.green(colorOff), Color.blue(colorOff));
+            paint.setColor(thumbColor);
 
             canvas.drawCircle(thumbBounds.centerX(), thumbBounds.centerY(), thumbRadii, paint);
             alpha = (int) (((thumbOnCenterX - thumbBounds.centerX()) / (thumbOnCenterX - thumbOffCenterX)) * 255);
             alpha = (alpha < 0 ? 0 : (alpha > 255 ? 255 : alpha));
             int onColor;
             if(isEnabled()) {
-                onColor = Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+                onColor = textColor > Integer.MIN_VALUE ? Color.argb(alpha, Color.red(textColor), Color.green(textColor), Color.blue(textColor)) :
+                        Color.argb(alpha, Color.red(colorOn), Color.green(colorOn), Color.blue(colorOn));
+
             } else {
                 onColor = Color.argb(alpha, Color.red(colorDisabled), Color.green(colorDisabled), Color.blue(colorDisabled));
             }
@@ -614,5 +639,41 @@ public class LabeledSwitch extends ToggleableView {
     public void setTextSize(int textSize) {
         this.textSize = (int)(textSize * getResources().getDisplayMetrics().scaledDensity);
         invalidate();
+    }
+
+    /**
+     * <p>Changes the toggle color.</p>
+     *
+     * @param toggleColor the color.
+     */
+    public void setToggleColor(int toggleColor) {
+        this.toggleColor = toggleColor;
+    }
+
+    /**
+     * <p>Changes the label color.</p>
+     *
+     * @param textColor the color.
+     */
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    /**
+     * <p>Changes the label case to upper.</p>
+     *
+     * @param textUpperCase whether text upper case.
+     */
+    public void setTextUpperCase(boolean textUpperCase) {
+        this.textUpperCase = textUpperCase;
+    }
+
+    /**
+     * <p>Changes the label case to lower.</p>
+     *
+     * @param textLowerCase whether text lower case.
+     */
+    public void setTextLowerCase(boolean textLowerCase) {
+        this.textLowerCase = textLowerCase;
     }
 }
