@@ -16,6 +16,7 @@
 
 package com.github.angads25.toggle.widget;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -27,6 +28,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import com.github.angads25.toggle.R;
 import com.github.angads25.toggle.model.ToggleableView;
@@ -54,6 +56,8 @@ public class LabeledSwitch extends ToggleableView {
     private Paint paint;
 
     private long startTime;
+    private long duration;
+    private Interpolator interpolator = new AccelerateDecelerateInterpolator();
 
     private String labelOn;
     private String labelOff;
@@ -77,6 +81,8 @@ public class LabeledSwitch extends ToggleableView {
     private float thumbOffCenterX;
 
     protected boolean startAnimationFromTouchPosition = true;
+    protected boolean interruptAnimation = true;
+    protected boolean allowClick = true;
 
     /**
      * Simple constructor to use when creating a switch from code.
@@ -378,6 +384,7 @@ public class LabeledSwitch extends ToggleableView {
      */
     @Override public final boolean performClick() {
         super.performClick();
+        if(!allowClick) return false;
         if (isOn) {
             ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
             switchColor.addUpdateListener(animation -> {
@@ -385,8 +392,25 @@ public class LabeledSwitch extends ToggleableView {
                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                 invalidate();
             });
-            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-            switchColor.setDuration(250);
+            switchColor.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if(!interruptAnimation) allowClick = false;
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    allowClick = true;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {}
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {}
+            });
+            switchColor.setInterpolator(interpolator);
+            switchColor.setDuration(duration);
             switchColor.start();
         } else {
             ValueAnimator switchColor = ValueAnimator.ofFloat(padding, width - padding - thumbRadii);
@@ -395,8 +419,25 @@ public class LabeledSwitch extends ToggleableView {
                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                 invalidate();
             });
-            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-            switchColor.setDuration(250);
+            switchColor.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if(!interruptAnimation) allowClick = false;
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    allowClick = true;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {}
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {}
+            });
+            switchColor.setInterpolator(interpolator);
+            switchColor.setDuration(duration);
             switchColor.start();
         }
         isOn =! isOn;
@@ -413,6 +454,7 @@ public class LabeledSwitch extends ToggleableView {
      * @return True if the event was handled, false otherwise.
      */
     @Override public final boolean onTouchEvent(MotionEvent event) {
+        if(!allowClick) return false;
         if(isEnabled()) {
             float x = startAnimationFromTouchPosition ? event.getX() : thumbBounds.centerX();
             switch (event.getAction()) {
@@ -443,8 +485,25 @@ public class LabeledSwitch extends ToggleableView {
                                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                                 invalidate();
                             });
-                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                            switchColor.setDuration(250);
+                            switchColor.addListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    if(!interruptAnimation) allowClick = false;
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    allowClick = true;
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {}
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {}
+                            });
+                            switchColor.setInterpolator(interpolator);
+                            switchColor.setDuration(duration);
                             switchColor.start();
                             isOn = true;
                         } else {
@@ -454,8 +513,25 @@ public class LabeledSwitch extends ToggleableView {
                                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                                 invalidate();
                             });
-                            switchColor.setInterpolator(new AccelerateDecelerateInterpolator());
-                            switchColor.setDuration(250);
+                            switchColor.addListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    if(!interruptAnimation) setEnabled(false);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    setEnabled(true);
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) { }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) { }
+                            });
+                            switchColor.setInterpolator(interpolator);
+                            switchColor.setDuration(duration);
                             switchColor.start();
                             isOn = false;
                         }
@@ -687,5 +763,34 @@ public class LabeledSwitch extends ToggleableView {
      */
     public void setStartAnimationFromTouchPosition(boolean startAnimationFromTouchPosition) {
         this.startAnimationFromTouchPosition = startAnimationFromTouchPosition;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public Interpolator getInterpolator() {
+        return interpolator;
+    }
+
+    public void setInterpolator(Interpolator interpolator) {
+        this.interpolator = interpolator;
+    }
+
+    public boolean isInterruptAnimation() {
+        return interruptAnimation;
+    }
+
+    /**
+     * <p>Added option to skip clicks and touches during animation.</p>
+     *
+     * @param interruptAnimation False means that clicks are not allowed during animation.
+     */
+    public void setInterruptAnimation(boolean interruptAnimation) {
+        this.interruptAnimation = interruptAnimation;
     }
 }

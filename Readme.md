@@ -13,6 +13,14 @@ Android Library for Custom Switches.
  3. Start toggle animation from touched X position or from the toggle position
   - setStartAnimationFromTouchPosition (only from code)
 
+ 4. Outsourced properties
+   - setDuration (only from code)
+   - setInterpolator (only from code)
+
+ 5. Added option the disable touch during animation
+   - setInterruptAnimation (only from code)
+
+
 ### Developed by
 [Angad Singh](https://www.github.com/angads25) ([@angads25](https://www.twitter.com/angads25))
 
