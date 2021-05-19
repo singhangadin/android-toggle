@@ -26,6 +26,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -386,9 +387,16 @@ public class LabeledSwitch extends ToggleableView {
         super.performClick();
         if(!allowClick) return false;
         if (isOn) {
-            ValueAnimator switchColor = ValueAnimator.ofFloat(width - padding - thumbRadii, padding);
+            float from = width - padding - thumbRadii;
+            ValueAnimator switchColor = ValueAnimator.ofFloat(from, padding);
             switchColor.addUpdateListener(animation -> {
                 float value = (float) animation.getAnimatedValue();
+                if (onAnimateListener != null){
+                    float position = (value - padding) / from;
+                    if (position > 1) position = 1;
+                    if (position < 0) position = 0;
+                    onAnimateListener.onAnimate(this, position);
+                }
                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                 invalidate();
             });
@@ -413,9 +421,17 @@ public class LabeledSwitch extends ToggleableView {
             switchColor.setDuration(duration);
             switchColor.start();
         } else {
-            ValueAnimator switchColor = ValueAnimator.ofFloat(padding, width - padding - thumbRadii);
+            float to = width - padding - thumbRadii;
+            ValueAnimator switchColor = ValueAnimator.ofFloat(padding, to);
             switchColor.addUpdateListener(animation -> {
                 float value = (float) animation.getAnimatedValue();
+                if(onAnimateListener != null){
+                    float position = (value - padding) / to;
+                    if (position > 1) position = 1;
+                    if (position < 0) position = 0;
+
+                    onAnimateListener.onAnimate(this, position);
+                }
                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                 invalidate();
             });
@@ -482,6 +498,7 @@ public class LabeledSwitch extends ToggleableView {
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x > (width - padding - thumbRadii) ? (width - padding - thumbRadii) : x), width - padding - thumbRadii);
                             switchColor.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
+                                Log.d("Valuef", String.valueOf(value));
                                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                                 invalidate();
                             });
@@ -510,6 +527,7 @@ public class LabeledSwitch extends ToggleableView {
                             ValueAnimator switchColor = ValueAnimator.ofFloat((x < padding ? padding : x), padding);
                             switchColor.addUpdateListener(animation -> {
                                 float value = (float) animation.getAnimatedValue();
+                                Log.d("Valuel", String.valueOf(value));
                                 thumbBounds.set(value, thumbBounds.top, value + thumbRadii, thumbBounds.bottom);
                                 invalidate();
                             });
