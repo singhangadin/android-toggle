@@ -20,6 +20,9 @@ Android Library for Custom Switches.
  5. Added option the disable touch during animation
    - setInterruptAnimation (only from code)
 
+ 6. Added Animation listener to track toggle position in percentages
+   - setOnAnimateListener (only from code)
+
 
 ### Developed by
 [Angad Singh](https://www.github.com/angads25) ([@angads25](https://www.twitter.com/angads25))
