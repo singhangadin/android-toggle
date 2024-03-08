@@ -57,6 +57,13 @@ Android Library for Custom Switches.
 
 ![Day Night Switch](https://raw.githubusercontent.com/Angads25/android-toggle/release/screenshots/version%202/DayNightSwitch.gif)
 
+### Buy me a Coffee
+
+If this project helped you reduce the development time, please consider donating :D
+
+![Buy me a Coffee](https://raw.githubusercontent.com/Angads25/android-toggle/release/screenshots/bmc-button.webp)
+
+
 ### License
     Copyright (C) 2018 Angad Singh
 
