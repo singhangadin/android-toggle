@@ -20,6 +20,22 @@
             format="color"/>
 
         <attr
+            name="colorText"
+            format="color"/>
+
+        <attr
+            name="colorToggle"
+            format="color"/>
+
+        <attr
+            name="textUpperCase"
+            format="boolean"/>
+
+        <attr
+            name="textLowerCase"
+            format="boolean"/>
+
+        <attr
             name="colorBorder"
             format="color"/>
 

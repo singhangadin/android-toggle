@@ -21,6 +21,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewDebug;
 
+import com.github.angads25.toggle.interfaces.OnAnimateListener;
 import com.github.angads25.toggle.interfaces.OnStateChangedListener;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 
@@ -56,6 +57,13 @@ public class ToggleableView extends View {
      * @see #setOnToggledListener(OnToggledListener)
      */
     protected OnToggledListener onToggledListener;
+
+    /**
+     * Listener to inform user about toggle position. Position are based on percentage between 0 and 1.
+     *
+     * @see #setOnAnimateListener(OnToggledListener)
+     */
+    protected OnAnimateListener onAnimateListener;
 
     /**
      * Simple constructor to use when creating a switch from code.
@@ -141,5 +149,15 @@ public class ToggleableView extends View {
      */
     public void setOnToggledListener(OnToggledListener onToggledListener) {
         this.onToggledListener = onToggledListener;
+    }
+
+    /**
+     * Register a callback to be invoked when the toggle animate between start and end position. If this switch is not
+     * enabled, there won't be any event.
+     *
+     * @param onAnimateListener The callback that will run
+     */
+    public void setOnAnimateListener(OnAnimateListener onAnimateListener) {
+        this.onAnimateListener = onAnimateListener;
     }
 }

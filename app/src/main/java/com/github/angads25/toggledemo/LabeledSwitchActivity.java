@@ -21,7 +21,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.animation.BounceInterpolator;
 
+import com.github.angads25.toggle.interfaces.OnAnimateListener;
+import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
 
 import java.util.Random;
@@ -36,6 +40,8 @@ public class LabeledSwitchActivity extends AppCompatActivity {
         R.id.switch1, R.id.switch2,
         R.id.switch4, R.id.switch5,
         R.id.switch7, R.id.switch8,
+            R.id.switch9, R.id.switch10, R.id.switch12,
+            R.id.switch12, R.id.switch13
     };
 
     private LabeledSwitch[] labeledSwitches;
@@ -76,6 +82,16 @@ public class LabeledSwitchActivity extends AppCompatActivity {
 
         labeledSwitches[2].setTypeface(openSansBold);
         labeledSwitches[3].setTypeface(openSansBold);
+        labeledSwitches[10].setDuration(5111);
+        labeledSwitches[10].setInterpolator(new BounceInterpolator());
+        labeledSwitches[10].setStartAnimationFromTouchPosition(false);
+        labeledSwitches[10].setInterruptAnimation(false);
+        labeledSwitches[10].setOnAnimateListener(new OnAnimateListener() {
+            @Override
+            public void onAnimate(ToggleableView toggleableView, float position) {
+                Log.d("Actual_position_percent", String.valueOf(position));
+            }
+        });
     }
 
     @Override
