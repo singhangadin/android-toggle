@@ -62,6 +62,7 @@ Android Library for Custom Switches.
 If this project helped you reduce the development time, please consider donating :D
 
 ![Buy me a Coffee](https://raw.githubusercontent.com/Angads25/android-toggle/release/screenshots/bmc-button.webp)
+[![Buy me a Coffee](https://raw.githubusercontent.com/Angads25/android-toggle/release/screenshots/bmc-button.webp)](https://www.buymeacoffee.com/singhangad.in)
 
 
 ### License
