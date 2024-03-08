@@ -18,6 +18,7 @@ package com.github.angads25.toggledemo
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_test.*
 
 /**
  * Created by Angad Singh on 14/07/18.
@@ -27,5 +28,12 @@ class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
+
+        text.text = "default:${switch1.isOn}"
+
+        switch1.setOnClickListener {
+            text.text ="onTouch:${switch1.isOn}"
+        }
+
     }
 }

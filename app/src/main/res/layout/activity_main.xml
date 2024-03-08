@@ -15,11 +15,11 @@
   ~ limitations under the License.
   -->
 
-<android.support.v7.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?layoutBackground"
     android:orientation="vertical"
     tools:context="com.github.angads25.toggledemo.MainActivity">
@@ -35,4 +35,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_day_night_switch"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_test"/>
+
 </android.support.v7.widget.LinearLayoutCompat>
